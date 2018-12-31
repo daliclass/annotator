@@ -3,7 +3,7 @@ package uk.daliclass.annotator.facts;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.daliclass.annotator.facts.domain.Fact;
+import uk.daliclass.annotator.common.Fact;
 
 import java.util.function.Function;
 

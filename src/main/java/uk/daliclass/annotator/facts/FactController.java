@@ -1,6 +1,6 @@
 package uk.daliclass.annotator.facts;
 
-import uk.daliclass.annotator.facts.domain.Fact;
+import uk.daliclass.annotator.common.Fact;
 
 import java.util.function.Function;
 

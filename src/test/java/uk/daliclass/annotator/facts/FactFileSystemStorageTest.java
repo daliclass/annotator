@@ -2,7 +2,7 @@ package uk.daliclass.annotator.facts;
 
 import org.junit.After;
 import org.junit.Test;
-import uk.daliclass.annotator.facts.domain.Fact;
+import uk.daliclass.annotator.common.Fact;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,8 +24,8 @@ public class FactFileSystemStorageTest {
     @Test
     public void whenProvidedAFactThenPersistToDisk() {
         Fact fact = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
-        FactStore factStore = new FactFileSystemStorage(FILE_PATH);
-        assertTrue(factStore.create(fact));
+        Log<Fact> log = new FactFileSystemStorage(FILE_PATH, Fact.class);
+        assertTrue(log.create(fact));
     }
 
     @Test
@@ -33,12 +33,12 @@ public class FactFileSystemStorageTest {
         Fact factOne = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
         Fact factTwo = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE);
         Fact factThree = new Fact(Fact.Predicate.IS_A, Fact.Object.ELECTRONIC);
-        FactStore factStore = new FactFileSystemStorage(FILE_PATH);
-        factStore.create(factOne);
-        factStore.create(factTwo);
-        factStore.create(factThree);
+        Log<Fact> log = new FactFileSystemStorage(FILE_PATH, Fact.class);
+        log.create(factOne);
+        log.create(factTwo);
+        log.create(factThree);
 
-        assertTrue(factStore.read().containsAll(new ArrayList() {{
+        assertTrue(log.read().containsAll(new ArrayList() {{
             add(factOne);
             add(factTwo);
             add(factThree);
