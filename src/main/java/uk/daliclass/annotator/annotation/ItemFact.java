@@ -6,7 +6,7 @@ public class ItemFact {
     private Integer itemId;
     private Fact fact;
 
-    public ItemFact(Integer itemId, Fact fact) {
+    public ItemFact(Integer itemId, Fact fact, String annotatorName) {
         this.itemId = itemId;
         this.fact = fact;
     }
@@ -25,5 +25,14 @@ public class ItemFact {
 
     public void setFact(Fact fact) {
         this.fact = fact;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ItemFact)) return false;
+        ItemFact other = (ItemFact) o;
+        if (this.itemId != other.itemId) return false;
+        if (!this.fact.equals(other.fact)) return false;
+        return true;
     }
 }
