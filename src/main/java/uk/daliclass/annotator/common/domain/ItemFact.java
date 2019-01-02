@@ -1,14 +1,26 @@
-package uk.daliclass.annotator.annotation;
-
-import uk.daliclass.annotator.common.Fact;
+package uk.daliclass.annotator.common.domain;
 
 public class ItemFact {
+    private String annotatorName;
     private Integer itemId;
     private Fact fact;
 
     public ItemFact(Integer itemId, Fact fact, String annotatorName) {
         this.itemId = itemId;
         this.fact = fact;
+        this.annotatorName = annotatorName;
+    }
+
+    public ItemFact() {
+
+    }
+
+    public String getAnnotatorName() {
+        return annotatorName;
+    }
+
+    public void setAnnotatorName(String annotatorName) {
+        this.annotatorName = annotatorName;
     }
 
     public Integer getItemId() {
@@ -33,6 +45,7 @@ public class ItemFact {
         ItemFact other = (ItemFact) o;
         if (this.itemId != other.itemId) return false;
         if (!this.fact.equals(other.fact)) return false;
+        if (!this.annotatorName.equals(other.annotatorName)) return false;
         return true;
     }
 }

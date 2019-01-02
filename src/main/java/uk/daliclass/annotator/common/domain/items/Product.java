@@ -1,7 +1,7 @@
-package uk.daliclass.annotator.common.items;
+package uk.daliclass.annotator.common.domain.items;
 
 
-import uk.daliclass.annotator.annotation.Idable;
+import uk.daliclass.annotator.common.domain.Idable;
 
 public class Product implements Idable {
     private Integer itemId;

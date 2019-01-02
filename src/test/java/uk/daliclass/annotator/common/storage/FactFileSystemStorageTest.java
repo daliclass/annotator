@@ -1,8 +1,10 @@
-package uk.daliclass.annotator.facts;
+package uk.daliclass.annotator.common.storage;
 
 import org.junit.After;
 import org.junit.Test;
-import uk.daliclass.annotator.common.Fact;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.storage.FactFileSystemStorage;
+import uk.daliclass.annotator.common.storage.Log;
 
 import java.io.IOException;
 import java.nio.file.Files;

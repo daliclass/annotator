@@ -3,10 +3,10 @@ package uk.daliclass.annotator.annotation.get;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.daliclass.annotator.annotation.ItemFact;
-import uk.daliclass.annotator.common.Fact;
-import uk.daliclass.annotator.common.items.Product;
-import uk.daliclass.annotator.facts.Log;
+import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.items.Product;
+import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.ArrayList;
 import java.util.List;

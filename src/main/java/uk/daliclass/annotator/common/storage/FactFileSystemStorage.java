@@ -1,4 +1,4 @@
-package uk.daliclass.annotator.facts;
+package uk.daliclass.annotator.common.storage;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -50,7 +50,7 @@ public class FactFileSystemStorage<T> implements Log<T> {
                 types.add(OBJECT_MAPPER.readValue(line.replace(LINE_BREAK, ""), clazz));
             }
         } catch (Exception e) {
-            LOGGER.warning(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
         return types;
     }

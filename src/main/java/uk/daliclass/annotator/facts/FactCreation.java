@@ -1,6 +1,8 @@
 package uk.daliclass.annotator.facts;
 
-import uk.daliclass.annotator.common.Fact;
+import uk.daliclass.annotator.common.domain.CreationStatus;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.List;
 import java.util.function.Function;

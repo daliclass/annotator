@@ -1,8 +1,9 @@
-package uk.daliclass.annotator.annotation.annotate;
+package uk.daliclass.annotator.annotation;
 
-import uk.daliclass.annotator.annotation.ItemFact;
-import uk.daliclass.annotator.common.Fact;
-import uk.daliclass.annotator.facts.Log;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.ItemAnnotation;
+import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.function.Consumer;
 

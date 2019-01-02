@@ -1,6 +1,4 @@
-package uk.daliclass.annotator.annotation.annotate;
-
-import uk.daliclass.annotator.common.Fact;
+package uk.daliclass.annotator.common.domain;
 
 import java.util.List;
 

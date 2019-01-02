@@ -1,9 +1,9 @@
 package uk.daliclass.annotator.annotation.get;
 
-import uk.daliclass.annotator.annotation.Idable;
-import uk.daliclass.annotator.annotation.ItemFact;
-import uk.daliclass.annotator.common.Fact;
-import uk.daliclass.annotator.facts.Log;
+import uk.daliclass.annotator.common.domain.Idable;
+import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.List;
 import java.util.Optional;

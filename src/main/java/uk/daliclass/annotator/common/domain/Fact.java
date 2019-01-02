@@ -1,4 +1,4 @@
-package uk.daliclass.annotator.common;
+package uk.daliclass.annotator.common.domain;
 
 public class Fact {
 

@@ -1,10 +1,8 @@
-package uk.daliclass.annotator.annotation;
-
-import uk.daliclass.annotator.common.Fact;
+package uk.daliclass.annotator.common.domain;
 
 import java.util.List;
 
-public class AnnotatorView<X> {
+public class AnnotatorView<X extends Idable> {
     private X item;
     private List<Fact> potentialFacts;
     private List<Fact> productFacts;
@@ -18,7 +16,7 @@ public class AnnotatorView<X> {
         return potentialFacts;
     }
 
-    public Integer getNextSubjectId() {
+    public Integer getNextItemId() {
         return nextSubjectId;
     }
 
