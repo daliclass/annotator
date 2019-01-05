@@ -54,4 +54,13 @@ public class FactFileSystemStorage<T> implements Log<T> {
         }
         return types;
     }
+
+    @Override
+    public void refresh() {
+        try {
+            Files.delete(this.filePath);
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+        }
+    }
 }

@@ -20,7 +20,7 @@ public class FactFileSystemStorageTest {
 
     @After
     public void after() throws IOException {
-        Files.delete(FILE_PATH);
+        new FactFileSystemStorage(FILE_PATH, Fact.class).refresh();
     }
 
     @Test

@@ -17,4 +17,9 @@ public class InMemoryItemStore<T> implements Log<T> {
     public List<T> read() {
         return new ArrayList<>(items);
     }
+
+    @Override
+    public void refresh() {
+        items = new ArrayList<>();
+    }
 }

@@ -15,6 +15,7 @@ public class AddItemsToAnnotate<T> implements Consumer<List<T>> {
 
     @Override
     public void accept(List<T> items) {
+        log.refresh();
         for (T item: items) {
             log.create(item);
         }
