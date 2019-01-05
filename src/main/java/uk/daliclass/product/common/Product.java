@@ -1,4 +1,4 @@
-package uk.daliclass.annotator.common.domain.items;
+package uk.daliclass.product.common;
 
 
 import uk.daliclass.annotator.common.domain.Idable;
@@ -67,8 +67,9 @@ public class Product implements Idable {
         if (!(o instanceof Product)) return false;
         Product other = (Product) o;
         if (this.itemId != other.itemId) return false;
-        if (this.cost == null && other.cost == null) return true;
-        if (!this.cost.equals(other.cost)) return false;
+        if (!(this.cost == null && other.cost == null)) {
+            if (!this.cost.equals(other.cost)) return false;
+        }
         if (this.description != other.description) return false;
         if (this.imageUrl != other.imageUrl) return false;
         if (this.name != other.name) return false;

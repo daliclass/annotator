@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.Fact;
-import uk.daliclass.annotator.common.domain.items.Product;
+import uk.daliclass.product.common.Product;
 import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.ArrayList;

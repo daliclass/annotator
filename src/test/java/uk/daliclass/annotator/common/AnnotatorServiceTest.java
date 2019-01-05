@@ -6,7 +6,7 @@ import uk.daliclass.annotator.common.domain.AnnotatorView;
 import uk.daliclass.annotator.common.domain.Fact;
 import uk.daliclass.annotator.common.domain.ItemAnnotation;
 import uk.daliclass.annotator.common.domain.ItemFact;
-import uk.daliclass.annotator.common.domain.items.Product;
+import uk.daliclass.product.common.Product;
 
 import java.io.IOException;
 import java.nio.file.Files;
