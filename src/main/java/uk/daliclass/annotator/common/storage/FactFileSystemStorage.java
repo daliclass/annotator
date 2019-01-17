@@ -18,7 +18,7 @@ public class FactFileSystemStorage<T> implements Log<T> {
     private static final Logger LOGGER = Logger.getLogger(FactFileSystemStorage.class.getName());
     private final Class<T> clazz;
 
-    public FactFileSystemStorage(Path filePath, Class<T> clazz) {
+    public FactFileSystemStorage(Path filePath, Class clazz) {
         this.filePath = filePath;
         this.clazz = clazz;
     }

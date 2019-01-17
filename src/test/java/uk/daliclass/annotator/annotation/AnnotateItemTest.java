@@ -10,6 +10,7 @@ import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.verify;
@@ -34,7 +35,7 @@ public class AnnotateItemTest {
 
     @Test
     public void whenAnnotatingAItemThenStoreAnnotationInAnnotationLog() {
-        ItemAnnotation itemAnnotation = new ItemAnnotation(ACTUAL_FACTS, ITEM_ID, ANNOTATOR_NAME);
+        ItemAnnotation itemAnnotation = new ItemAnnotation(ACTUAL_FACTS, ITEM_ID, ANNOTATOR_NAME, UUID.randomUUID());
         AnnotateItem annotateItem = new AnnotateItem(itemFactLog);
         annotateItem.accept(itemAnnotation);
         List<ItemFact> expectedItemFacts = ACTUAL_FACTS.stream()

@@ -3,14 +3,17 @@ package uk.daliclass.annotator.common.storage;
 import org.junit.After;
 import org.junit.Test;
 import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.storage.FactFileSystemStorage;
 import uk.daliclass.annotator.common.storage.Log;
+import uk.daliclass.product.common.Product;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
@@ -26,7 +29,7 @@ public class FactFileSystemStorageTest {
     @Test
     public void whenProvidedAFactThenPersistToDisk() {
         Fact fact = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
-        Log<Fact> log = new FactFileSystemStorage(FILE_PATH, Fact.class);
+        Log<Fact> log = new FactFileSystemStorage<>(FILE_PATH, Fact.class);
         assertTrue(log.create(fact));
     }
 
@@ -35,7 +38,7 @@ public class FactFileSystemStorageTest {
         Fact factOne = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
         Fact factTwo = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE);
         Fact factThree = new Fact(Fact.Predicate.IS_A, Fact.Object.ELECTRONIC);
-        Log<Fact> log = new FactFileSystemStorage(FILE_PATH, Fact.class);
+        Log<Fact> log = new FactFileSystemStorage<>(FILE_PATH, Fact.class);
         log.create(factOne);
         log.create(factTwo);
         log.create(factThree);
@@ -44,6 +47,21 @@ public class FactFileSystemStorageTest {
             add(factOne);
             add(factTwo);
             add(factThree);
+        }}));
+    }
+
+    @Test
+    public void writingAndReadingGenerics() {
+        List<Product> products = new ArrayList<>() {{
+            add(new Product(1, "str", "Str", 0.0, "str"));
+        }};
+        ItemSet<Product> factOne = new ItemSet<Product>("set1", products);
+        Log<ItemSet> log = new FactFileSystemStorage<>(FILE_PATH, ItemSet.class);
+        log.create(factOne);
+
+
+        assertTrue(log.read().containsAll(new ArrayList() {{
+
         }}));
     }
 }

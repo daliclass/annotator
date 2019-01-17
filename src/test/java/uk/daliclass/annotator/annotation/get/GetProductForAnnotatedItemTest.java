@@ -5,13 +5,17 @@ import org.junit.Test;
 import org.mockito.Mock;
 import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.ItemSet;
+import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.product.common.Product;
 import uk.daliclass.annotator.common.storage.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -19,6 +23,8 @@ public class GetProductForAnnotatedItemTest {
 
     private static final String USERNAME = "USERNAME";
     private static final Integer SUBJECT_ID = 1;
+    private static final UUID SET_ID = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e5");
+    private static final UUID SET_ID2 = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e6");
     private static final List<Fact> FACTS = new ArrayList<Fact>() {{
         add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
         add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE));
@@ -33,18 +39,15 @@ public class GetProductForAnnotatedItemTest {
         add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE));
     }};
     private static final List<Product> PRODUCTS = new ArrayList<Product>() {{
+        add(new Product(0, "Microwave", "A green Microwave", 30.0, "image.url"));
         add(new Product(1, "Toaster", "A green toaster", 20.0, "image.url"));
-        add(new Product(2, "Microwave", "A green Microwave", 30.0, "image.url"));
     }};
-
-    @Mock
-    Log<Fact> factLog;
 
     @Mock
     Log<ItemFact> itemFactLog;
 
     @Mock
-    Log<Product> productLog;
+    Log<ItemSet<Product>> productLog;
 
     @Before
     public void before() {
@@ -52,44 +55,73 @@ public class GetProductForAnnotatedItemTest {
     }
 
     @Test
-    public void whenProvidedASubjectAndAUsernameThenPopulateThePotentialFacts() {
-        when(factLog.read()).thenReturn(FACTS);
-        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(factLog, itemFactLog, productLog);
-        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(USERNAME, SUBJECT_ID);
+    public void whenProvidedARequestThenPopulateThePotentialFacts() {
+        mockItemSets();
+
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID2, USERNAME, SUBJECT_ID)
+        );
         assertEquals(FACTS, productAnnotatedItem.potentialFacts);
     }
 
     @Test
-    public void whenProvidedASubjectAndAUsernameThenPopulateTheProductFacts() {
+    public void whenRequestThenPopulateTheProductFacts() {
+        mockItemSets();
         when(itemFactLog.read()).thenReturn(ITEM_FACTS);
-        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(factLog, itemFactLog, productLog);
-        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(USERNAME, SUBJECT_ID);
+
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID, USERNAME, SUBJECT_ID));
         assertEquals(EXPECTED_ITEM_FACTS, productAnnotatedItem.itemFacts);
     }
 
     @Test
-    public void whenProvidedASubjectAndAUsernameThenPopulateProductAnnotation() {
-        when(productLog.read()).thenReturn(PRODUCTS);
+    public void whenRequestThenPopulateProductAnnotation() {
+        mockItemSets();
+
         Product expectedProduct =
                 new Product(1, "Toaster", "A green toaster", 20.0, "image.url");
-        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(factLog, itemFactLog, productLog);
-        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(USERNAME, SUBJECT_ID);
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID2, USERNAME, SUBJECT_ID));
         assertEquals(expectedProduct, productAnnotatedItem.item);
     }
 
     @Test
-    public void whenProvidedASubjectAndAUsernameThenNextItem() {
-        when(productLog.read()).thenReturn(PRODUCTS);
-        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(factLog, itemFactLog, productLog);
-        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(USERNAME, SUBJECT_ID);
-        assertEquals(Integer.valueOf(2), productAnnotatedItem.nextItemId);
+    public void whenProvidedARequestThenPopulateNextItem() {
+        mockItemSets();
+
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID, USERNAME, 0));
+        assertEquals(Integer.valueOf(1), productAnnotatedItem.nextItemId);
     }
 
     @Test
-    public void whenProvidedASubjectAndAUsernameAndItsTheLastItemThenDoNotPopulateNextItemId() {
-        when(productLog.read()).thenReturn(PRODUCTS);
-        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(factLog, itemFactLog, productLog);
-        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(USERNAME, 2);
+    public void whenProvidedARequestAndItsTheLastItemThenDoNotPopulateNextItemId() {
+        mockItemSets();
+
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID2, USERNAME, SUBJECT_ID));
         assertEquals(null, productAnnotatedItem.nextItemId);
     }
+
+    public void mockItemSets() {
+        ItemSet<Product> itemSet = new ItemSet<>("set 1", PRODUCTS);
+        itemSet.setSetId(SET_ID);
+        itemSet.setFacts(FACTS);
+        List<Product> productCopy = new ArrayList<>(PRODUCTS);
+        productCopy.remove(0);
+        ItemSet<Product> itemSetTwo = new ItemSet<>("set 1", productCopy);
+        itemSetTwo.setSetId(SET_ID2);
+        itemSetTwo.setFacts(FACTS);
+        List<ItemSet<Product>> itemSets = new ArrayList<>() {{
+            add(itemSet);
+            add(itemSetTwo);
+        }};
+        when(productLog.read()).thenReturn(itemSets);
+    }
+
 }

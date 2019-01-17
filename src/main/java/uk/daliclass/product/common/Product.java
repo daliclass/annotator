@@ -3,6 +3,7 @@ package uk.daliclass.product.common;
 
 import uk.daliclass.annotator.common.domain.Idable;
 
+
 public class Product implements Idable {
     private Integer itemId;
     private String name;

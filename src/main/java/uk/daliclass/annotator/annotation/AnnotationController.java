@@ -1,35 +1,45 @@
 package uk.daliclass.annotator.annotation;
 
-import uk.daliclass.annotator.common.domain.AnnotatorView;
+import uk.daliclass.annotator.common.domain.ItemSet;
+import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
+import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.common.domain.Idable;
 import uk.daliclass.annotator.annotation.get.AnnotatedItem;
 import uk.daliclass.annotator.annotation.get.GetItemForAnnotation;
 import uk.daliclass.annotator.common.domain.ItemAnnotation;
 import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.domain.views.ItemSetView;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class AnnotationController<T extends Idable> {
 
-    private final GetItemForAnnotation getSubjectToAnnotation;
+    private final GetItemForAnnotation getItemForAnnotation;
     private final MapAnnotationToAnnotatorView mapAnnotationToAnnotatorView;
     private final AnnotateItem annotateItem;
-    private final AddItemsToAnnotate<T> addItemsToAnnotate;
     private final GetFactsForItem getFactsForItem;
+    private final GetItemSets<T> getItemSets;
+    private final MapItemSetToView mapItemSetToView;
+    private final AddItemsToAnnotate<T> addItemsToAnnotate;
 
     public AnnotationController(GetItemForAnnotation getItemForAnnotation,
                                 AnnotateItem annotateItem,
-                                AddItemsToAnnotate<T> addItemsToAnnotate, GetFactsForItem getFactsForItem) {
-        this.getSubjectToAnnotation = getItemForAnnotation;
+                                GetFactsForItem getFactsForItem,
+                                GetItemSets<T> getItemSets,
+                                AddItemsToAnnotate<T> addItemsToAnnotate) {
+        this.getItemForAnnotation = getItemForAnnotation;
         this.mapAnnotationToAnnotatorView = new MapAnnotationToAnnotatorView();
         this.annotateItem = annotateItem;
-        this.addItemsToAnnotate = addItemsToAnnotate;
         this.getFactsForItem = getFactsForItem;
+        this.mapItemSetToView = new MapItemSetToView();
+        this.getItemSets = getItemSets;
+        this.addItemsToAnnotate = addItemsToAnnotate;
     }
 
-    public AnnotatorView<T> getItemToAnnotate(String username, Integer subjectId) {
-        AnnotatedItem annotatedItem = getSubjectToAnnotation.apply(username, subjectId);
+    public AnnotatorView<T> getItemToAnnotate(ItemToAnnotateRequest itemToAnnotateRequest) {
+        AnnotatedItem annotatedItem = getItemForAnnotation.apply(itemToAnnotateRequest);
         return mapAnnotationToAnnotatorView.apply(annotatedItem);
     }
 
@@ -37,12 +47,18 @@ public class AnnotationController<T extends Idable> {
         annotateItem.accept(itemAnnotation);
     }
 
-    public void addItemsToAnnotate(List<T> items) {
-        addItemsToAnnotate.accept(items);
-    }
-
     public List<ItemFact> getFactsForItem(Integer itemId) {
         return this.getFactsForItem.apply(itemId);
+    }
+
+    public List<ItemSetView> getItemSetViews() {
+        return getItemSets.get().stream()
+                .map(mapItemSetToView::apply)
+                .collect(Collectors.toList());
+    }
+
+    public void addItemsToAnnotate(ItemSet<T> itemSet) {
+        addItemsToAnnotate.accept(itemSet);
     }
 
     class MapAnnotationToAnnotatorView implements Function<AnnotatedItem<T>, AnnotatorView<T>> {
@@ -55,6 +71,14 @@ public class AnnotationController<T extends Idable> {
             annotatorView.setNextSubjectId(annotatedItem.nextItemId);
             annotatorView.setItem(annotatedItem.item);
             return annotatorView;
+        }
+    }
+
+    class MapItemSetToView implements Function<ItemSet, ItemSetView> {
+
+        @Override
+        public ItemSetView apply(ItemSet itemSet) {
+            return new ItemSetView(itemSet.getName(), itemSet.getUuid(), itemSet.getItems().size());
         }
     }
 }

@@ -1,18 +1,21 @@
 package uk.daliclass.annotator.common.domain;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ItemAnnotation {
     private List<Fact> itemFacts;
     private Integer itemId;
     private String annotatorName;
+    private UUID itemSetUuid;
 
     public ItemAnnotation() {}
 
-    public ItemAnnotation(List<Fact> itemFacts, Integer itemId, String annotatorName) {
+    public ItemAnnotation(List<Fact> itemFacts, Integer itemId, String annotatorName, UUID itemSetUuid) {
         this.itemFacts = itemFacts;
         this.itemId = itemId;
         this.annotatorName = annotatorName;
+        this.itemSetUuid = itemSetUuid;
     }
 
     public Integer getItemId() {
@@ -37,5 +40,13 @@ public class ItemAnnotation {
 
     public void setAnnotatorName(String annotatorName) {
         this.annotatorName = annotatorName;
+    }
+
+    public UUID getItemSetUuid() {
+        return itemSetUuid;
+    }
+
+    public void setItemSetUuid(UUID itemSetUuid) {
+        this.itemSetUuid = itemSetUuid;
     }
 }
