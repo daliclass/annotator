@@ -6,8 +6,8 @@ import React from "react";
 
 describe("Given the SelectableTextField", () => {
   let wrapper = null;
-  const OPTIONS = [
-    {
+  let spy = jest.fn();
+  const OPTIONS = [{
       label: "a",
       value: "A"
     },
@@ -30,7 +30,12 @@ describe("Given the SelectableTextField", () => {
   ];
 
   beforeEach(() => {
-    wrapper = shallow(<SelectableTextField options={OPTIONS} />);
+    wrapper = shallow(
+      <SelectableTextField
+        options={OPTIONS}
+        selectedOption={OPTIONS[0]}
+        onChange={spy} />
+    );
   });
 
   describe("When provided rendering the 5 options", () => {
@@ -53,12 +58,18 @@ describe("Given the SelectableTextField", () => {
 
   describe("When selecting a MenuItem", () => {
     it("Then set the TextField value to the selected value", () => {
+      expect(wrapper.find(TextField).props().value).toEqual("a");
+    });
+  });
+
+  describe("When selecting a MenuItem", () => {
+    it("Then call on change with the option", () => {
       wrapper.find(TextField).simulate("change", {
         target: {
           value: "b"
         }
       });
-      expect(wrapper.find(TextField).props().value).toEqual("b");
+      expect(spy).toHaveBeenCalledWith(OPTIONS[1]);
     });
   });
 });

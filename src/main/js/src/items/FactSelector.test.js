@@ -2,34 +2,68 @@ import {shallow} from "enzyme";
 import React from "react";
 import FactSelector from "./FactSelector.js";
 
-describe("Given the fact selector has no options", () => {
-  describe("When the user adds 1 predicate and 3 objects then", () => {
+const OBJECTS = ["MEN", "WOMEN", "CHILDREN"];
+const PREDICATE = "SUITABLE_FOR";
+const FACT_ID = 0;
+
+function createWrapper(onChange) {
+  return shallow(
+    <FactSelector
+      onChange={onChange}
+      objects={OBJECTS}
+      predicate={PREDICATE}
+      id={FACT_ID}
+    />
+  ).dive();
+}
+
+describe("Given the fact selector is provided 3 OBJECTS and  PRREDICATE", () => {
+  describe("When the user changes the text field", () => {
     let spy = jest.fn();
-    let wrapper = shallow(<FactSelector onChange={spy} />).dive();
+    let wrapper = createWrapper(spy);
+
+    const UPDATED_PREDICATE = "unsuitable_for";
 
     wrapper.find("#predicate").simulate("change", {
       target: {
-        value: "suitable for"
+        value: UPDATED_PREDICATE
       }
     });
-    wrapper.find("#facts").simulate("change", ["men", "women", "children"]);
 
-    it("Then onChange is called with the predicate and 3 objects", () => {
+    it("Then onChange is called with the updated predicate and 3 objects", () => {
       expect(spy).toHaveBeenCalledWith({
-        predicate: "suitable for",
-        facts: ["men", "women", "children"]
+        id: FACT_ID,
+        predicate: UPDATED_PREDICATE,
+        objects: OBJECTS
+      });
+    });
+
+    describe("When the user changes the chip input", () => {
+      let spy = jest.fn();
+      let wrapper = createWrapper(spy);
+
+      const UPDATED_OBJECTS = ["FOO", "BAR", "BAZ"];
+
+      wrapper.find("#objects").simulate("change", UPDATED_OBJECTS);
+
+      it("Then onChange is called with the updated predicate and 3 objects", () => {
+        expect(spy).toHaveBeenCalledWith({
+          id: FACT_ID,
+          predicate: PREDICATE,
+          objects: UPDATED_OBJECTS
+        });
       });
     });
   });
 
-  describe("When the user tries to set 3 objects without a predicate", () => {
+  describe("When provided a predicate and objects", () => {
     let spy = jest.fn();
-    let wrapper = shallow(<FactSelector onChange={spy} />).dive();
-
-    wrapper.find("#facts").simulate("change", ["men", "women", "children"]);
-
-    it("Then onChange is called with the predicate and 3 objects", () => {
-      expect(spy).not.toHaveBeenCalled();
+    let wrapper = createWrapper(spy);
+    it("Then updates view to display objects", () => {
+      expect(wrapper.find("#objects").props().value).toEqual(OBJECTS);
+    });
+    it("Then updates view to display predicate", () => {
+      expect(wrapper.find("#predicate").props().value).toEqual(PREDICATE);
     });
   });
 });

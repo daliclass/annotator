@@ -11,40 +11,27 @@ const styles = theme => ({
 });
 
 class FactSelector extends Component {
-  state = {
-    predicate: "",
-    facts: [],
-    factsDisabled: true
-  };
 
   constructor(props) {
     super(props);
-    this.onChange = props.onChange;
-    this.currentPredicate = null;
     this.onTextFieldChange = this.onTextFieldChange.bind(this);
     this.onFactChange = this.onFactChange.bind(this);
-    this.EMPTY_VALUE = "";
   }
 
   onTextFieldChange(change) {
-    this.setState({
-      factsDisabled: change.target.value === this.EMPTY_VALUE,
-      predicate: change.target.value
+    this.props.onChange({
+      id: this.props.id,
+      predicate: change.target.value,
+      objects: this.props.objects
     });
   }
 
-  onFactChange(facts) {
-    this.setState({
-      facts: facts
-    });
-
-    if (this.state.predicate !== this.EMPTY_VALUE) {
-      let onChangeMessage = {
-        predicate: this.state.predicate,
-        facts: this.state.facts
-      };
-      this.onChange(onChangeMessage);
-    }
+  onFactChange(objects) {
+    this.props.onChange({
+      id: this.props.id,
+      predicate: this.props.predicate,
+      objects: objects
+    })
   }
 
   render() {
@@ -54,14 +41,16 @@ class FactSelector extends Component {
         <TextField
           id="predicate"
           onChange={this.onTextFieldChange}
-          label="Predicate and facts *"
+          label="Predicate and objects *"
           fullWidth
+          value={this.props.predicate}
         />
         <ChipInput
-          id="facts"
+          id="objects"
           onChange={chips => this.onFactChange(chips)}
           disabled={false}
           fullWidth
+          value={this.props.objects}
         />
       </section>
     );

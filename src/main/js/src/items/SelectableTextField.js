@@ -5,11 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 class SelectableTextField extends Component {
   constructor(props) {
     super(props);
-    this.options = props.options;
     this.onChange = this.onChange.bind(this);
-    this.state = {
-      value: "value"
-    };
   }
 
   render() {
@@ -22,7 +18,7 @@ class SelectableTextField extends Component {
         fullWidth
         select
         onChange={this.onChange}
-        value={this.state.value}
+        value={this.props.selectedOption.label}
       >
         {this.props.options.map(option => {
           return (
@@ -35,11 +31,12 @@ class SelectableTextField extends Component {
     );
   }
 
-  onChange(menuItem) {
-    let value = menuItem.target.value;
-    this.setState({
-      value: value
-    });
+  onChange(change) {
+    let selectedLabel = change.target.value;
+    let selectedOption = this.props.options.filter((option) => {
+      return option.label === selectedLabel;
+    })[0];
+    this.props.onChange(selectedOption);
   }
 }
 
