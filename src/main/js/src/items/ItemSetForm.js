@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 
 import SelectableTextField from "./SelectableTextField.js";
 import FactSelector from "./FactSelector.js";
+import { setNameAction, setTypeAction, setFactAction } from './itemSetCreator.js';
 
 export class ItemSetForm extends Component {
   constructor(props) {
@@ -39,24 +40,15 @@ export class ItemSetForm extends Component {
   }
 
   onTypeChange(option) {
-    this.props.dispatch({
-      type: "SET_TYPE",
-      payload: option
-    });
+    this.props.dispatch(setTypeAction(option.label, option.value))
   }
 
   onFactChange(fact) {
-    this.props.dispatch({
-      type: "SET_FACT",
-      payload: fact
-    });
+    this.props.dispatch(setFactAction(fact.id, fact.predicate, fact.objects))
   }
 
   onNameChange(change) {
-    this.props.dispatch({
-      type: "SET_NAME",
-      payload: {value: change.target.value}
-    });
+    this.props.dispatch(setNameAction(change.target.value));
   }
 
   render() {
