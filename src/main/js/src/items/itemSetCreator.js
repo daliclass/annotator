@@ -97,7 +97,7 @@ export function itemSetCreator(state = DEFAULT_STATE, action) {
       let itemsToAnnotate = [];
       const ID = 0;
       const TEXT = 1;
-      action.payload.shift(); // REMOVE CSV HEADERS
+      action.payload.shift(); // REMOVE HEADERS
       action.payload.forEach(line => {
         if (line.length > 1) {
           if (line[ID] && line[TEXT]) {
