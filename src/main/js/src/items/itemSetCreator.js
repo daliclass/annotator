@@ -116,7 +116,7 @@ function getFact(facts, id) {
   if (factsWithMatchingId.length > 0) {
     return factsWithMatchingId[0];
   } else {
-    return null; // creating a new fact
+    return null;
   }
 }
 
