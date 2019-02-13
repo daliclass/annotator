@@ -33,7 +33,7 @@ class SelectableTextField extends Component {
 
   onChange(change) {
     let selectedLabel = change.target.value;
-    let selectedOption = this.props.options.filter((option) => {
+    let selectedOption = this.props.options.filter(option => {
       return option.label === selectedLabel;
     })[0];
     this.props.onChange(selectedOption);

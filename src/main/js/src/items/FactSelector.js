@@ -11,11 +11,11 @@ const styles = theme => ({
 });
 
 class FactSelector extends Component {
-
   constructor(props) {
     super(props);
     this.onTextFieldChange = this.onTextFieldChange.bind(this);
     this.onFactChange = this.onFactChange.bind(this);
+    this.onObjectDelete = this.onObjectDelete.bind(this);
   }
 
   onTextFieldChange(change) {
@@ -31,7 +31,17 @@ class FactSelector extends Component {
       id: this.props.id,
       predicate: this.props.predicate,
       objects: objects
-    })
+    });
+  }
+
+  onObjectDelete(objectToDelete) {
+    let objects = this.props.objects.reduce((acc, object) => {
+      if (object !== objectToDelete) {
+        acc.push(object);
+      }
+      return acc;
+    }, []);
+    this.onFactChange(objects);
   }
 
   render() {
@@ -51,6 +61,7 @@ class FactSelector extends Component {
           disabled={false}
           fullWidth
           value={this.props.objects}
+          onDelete={this.onObjectDelete}
         />
       </section>
     );

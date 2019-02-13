@@ -54,6 +54,23 @@ describe("Given the fact selector is provided 3 OBJECTS and  PRREDICATE", () => 
         });
       });
     });
+
+    describe("When the removed a object", () => {
+      let spy = jest.fn();
+      let wrapper = createWrapper(spy);
+
+      const REMOVED_OBJECT = "MEN";
+      const UPDATED_OBJECTS = ["WOMEN", "CHILDREN"];
+      wrapper.find("#objects").simulate("delete", REMOVED_OBJECT);
+
+      it("Then onChange is called with the updated predicate and 2 objects", () => {
+        expect(spy).toHaveBeenCalledWith({
+          id: FACT_ID,
+          predicate: PREDICATE,
+          objects: UPDATED_OBJECTS
+        });
+      });
+    });
   });
 
   describe("When provided a predicate and objects", () => {

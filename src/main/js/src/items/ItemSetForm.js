@@ -2,10 +2,32 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import {DropzoneArea} from "material-ui-dropzone";
+import {withStyles} from "@material-ui/core/styles";
 
 import SelectableTextField from "./SelectableTextField.js";
 import FactSelector from "./FactSelector.js";
-import { setNameAction, setTypeAction, setFactAction } from './itemSetCreator.js';
+import {
+  setNameAction,
+  setTypeAction,
+  setFactAction,
+  createItemSetAction,
+  uploadTemplateAction,
+  downloadTemplateAction
+} from "./itemSetCreator.js";
+
+export const formStyles = {
+  text: {
+    "font-size": "1rem",
+    "font-weight": 500,
+    "font-family": '"Roboto", "Helvetica", "Arial", sans-serif'
+  },
+  uploadBox: {
+    "min-height": "150px"
+  }
+};
+
+const styles = theme => formStyles;
 
 export class ItemSetForm extends Component {
   constructor(props) {
@@ -19,32 +41,28 @@ export class ItemSetForm extends Component {
   }
 
   createItemSet() {
-    this.props.dispatch({
-      type: "CREATE_ITEM_SET",
-      payload: undefined
-    });
+    this.props.dispatch(createItemSetAction());
   }
 
-  onUpload() {
-    this.props.dispatch({
-      type: "UPLOAD_TEMPLATE",
-      payload: undefined
-    });
+  onUpload(file) {
+    console.log(file);
+    if (file.length === 0) {
+      this.props.dispatch(uploadTemplateAction(undefined));
+    } else {
+      this.props.dispatch(this.props.parseTemplateAction(file[0]));
+    }
   }
 
   onDownload() {
-    this.props.dispatch({
-      type: "DOWNLOAD_TEMPLATE",
-      payload: undefined
-    });
+    this.props.dispatch(downloadTemplateAction());
   }
 
   onTypeChange(option) {
-    this.props.dispatch(setTypeAction(option.label, option.value))
+    this.props.dispatch(setTypeAction(option.label, option.value));
   }
 
   onFactChange(fact) {
-    this.props.dispatch(setFactAction(fact.id, fact.predicate, fact.objects))
+    this.props.dispatch(setFactAction(fact.id, fact.predicate, fact.objects));
   }
 
   onNameChange(change) {
@@ -52,6 +70,8 @@ export class ItemSetForm extends Component {
   }
 
   render() {
+    const MB = 1000000;
+    const {classes} = this.props;
     return (
       <form noValidate autoComplete="off">
         <TextField
@@ -80,12 +100,26 @@ export class ItemSetForm extends Component {
             />
           );
         })}
-        <Button label="" id="downloadButton" onClick={this.onDownload}>
-          Download upload template
+        <Button
+          label=""
+          id="downloadButton"
+          onClick={this.onDownload}
+          href={process.env.PUBLIC_URL + "/text_annotation_template.csv"}
+          download
+        >
+          DOWNLOAD TEMPLATE
         </Button>
-        <Button id="uploadButton" onClick={this.onUpload}>
-          Upload template
-        </Button>
+        <DropzoneArea
+          id="csvUpload"
+          onChange={this.onUpload}
+          filesLimit={1}
+          maxFileSize={10 * MB}
+          dropzoneText="Upload CSV of Items to Annotate"
+          showAlerts={false}
+          dropzoneParagraphClass={classes.text}
+          dropZoneClass={classes.uploadBox}
+          acceptedFiles={["text/csv"]}
+        />
         <Button id="createItemSet" onClick={this.createItemSet}>
           Create item set
         </Button>
@@ -95,7 +129,6 @@ export class ItemSetForm extends Component {
 }
 
 const mapStateToProps = function(state) {
-  console.log(state);
   return {
     name: state.name,
     type: state.type,
@@ -104,4 +137,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-export default connect(mapStateToProps)(ItemSetForm);
+export default withStyles(styles)(connect(mapStateToProps)(ItemSetForm));

@@ -7,7 +7,8 @@ import React from "react";
 describe("Given the SelectableTextField", () => {
   let wrapper = null;
   let spy = jest.fn();
-  const OPTIONS = [{
+  const OPTIONS = [
+    {
       label: "a",
       value: "A"
     },
@@ -34,7 +35,8 @@ describe("Given the SelectableTextField", () => {
       <SelectableTextField
         options={OPTIONS}
         selectedOption={OPTIONS[0]}
-        onChange={spy} />
+        onChange={spy}
+      />
     );
   });
 
