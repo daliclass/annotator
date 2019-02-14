@@ -1,11 +1,12 @@
 import _ from "lodash";
 import Papa from "papaparse";
+import uuidv4 from "uuid/v4";
 export const DEFAULT_STATE = {
   name: "",
   type: {label: "text", value: "text"},
-  options: [{label: "text", value: "text"}, {label: "image", value: "image"}],
+  options: [{label: "text", value: "text"}],
   facts: [{id: 0, predicate: "", objects: []}],
-  itemsToAnnotate: []
+  items: []
 };
 
 const ACTIONS = {
@@ -42,6 +43,33 @@ export function setFactAction(id, predicate, objects) {
   };
 }
 
+export function postItemSetAction() {
+  return (dispatch, getState) => {
+    let state = _.cloneDeep(getState());
+
+    state.items = state.items.map(item => {
+      item["@class"] = "uk.daliclass.text.common.Text";
+      return item;
+    });
+
+    fetch("http://localhost:8080/annotate/text", {
+      method: "post",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        name: state.name,
+        uuid: uuidv4(),
+        facts: state.facts,
+        items: state.items
+      })
+    }).then(function(response) {
+      return {
+        type: ACTIONS.CREATE_ITEM_SET,
+        payload: response
+      };
+    });
+  };
+}
+
 export function createItemSetAction() {
   return {
     type: ACTIONS.CREATE_ITEM_SET,
@@ -62,10 +90,8 @@ export function uploadTemplateAction(jsonCsv) {
 
 export function parseTemplateAction(file) {
   return function(dispatch) {
-    console.log("called");
     Papa.parse(file, {
       complete: (results, parsedFile) => {
-        console.log(results);
         dispatch(uploadTemplateAction(results.data));
       }
     });
@@ -91,21 +117,23 @@ export function itemSetCreator(state = DEFAULT_STATE, action) {
       break;
     case ACTIONS.UPLOAD_TEMPLATE:
       if (action.payload === undefined) {
-        copyOfState.itemsToAnnotate = [];
+        copyOfState.items = [];
         break;
       }
-      let itemsToAnnotate = [];
+      let items = [];
       const ID = 0;
       const TEXT = 1;
       action.payload.shift(); // REMOVE HEADERS
       action.payload.forEach(line => {
         if (line.length > 1) {
           if (line[ID] && line[TEXT]) {
-            itemsToAnnotate.push({id: line[ID], text: line[TEXT]});
+            items.push({id: line[ID], text: line[TEXT]});
           }
         }
       });
-      copyOfState.itemsToAnnotate = itemsToAnnotate;
+      copyOfState.items = items;
+      break;
+    case ACTIONS.CREATE_ITEM_SET:
       break;
   }
   return copyOfState;

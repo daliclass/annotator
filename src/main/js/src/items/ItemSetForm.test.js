@@ -4,7 +4,7 @@ import {shallow} from "enzyme";
 
 import {ItemSetForm, formStyles} from "./ItemSetForm.js";
 import FactSelector from "./FactSelector.js";
-import {uploadTemplateAction} from "./itemSetCreator.js";
+import {uploadTemplateAction, createItemSetAction} from "./itemSetCreator.js";
 
 function renderWrapper(spy) {
   return shallow(
@@ -13,6 +13,7 @@ function renderWrapper(spy) {
       facts={[{id: 1, predicate: "", objects: []}]}
       classes={formStyles}
       parseTemplateAction={uploadTemplateAction}
+      createItemSetAction={createItemSetAction}
     />
   );
 }

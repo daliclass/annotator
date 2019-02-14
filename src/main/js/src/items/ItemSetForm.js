@@ -41,11 +41,10 @@ export class ItemSetForm extends Component {
   }
 
   createItemSet() {
-    this.props.dispatch(createItemSetAction());
+    this.props.dispatch(this.props.createItemSetAction());
   }
 
   onUpload(file) {
-    console.log(file);
     if (file.length === 0) {
       this.props.dispatch(uploadTemplateAction(undefined));
     } else {

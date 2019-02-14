@@ -103,7 +103,7 @@ describe("Given item set is being created", () => {
         }
       ];
       const expectedState = cloneDefaultState();
-      expectedState.itemsToAnnotate = EXPECTED_TEXT_OBJECTS;
+      expectedState.items = EXPECTED_TEXT_OBJECTS;
       const ACTUAL_STATE = itemSetCreator(START_STATE, ACTION);
       expect(ACTUAL_STATE).toEqual(expectedState);
     });
@@ -121,12 +121,12 @@ describe("Given item set is being created", () => {
         text: "Whys a washing machine in the pub i need another drink"
       }
     ];
-    startState.itemsToAnnotate = EXPECTED_TEXT_OBJECTS;
+    startState.items = EXPECTED_TEXT_OBJECTS;
 
-    it("Then remove itemsToAnnotate", () => {
+    it("Then remove items", () => {
       const ACTION = uploadTemplateAction(undefined);
       const expectedState = cloneDefaultState();
-      expectedState.itemsToAnnotate = [];
+      expectedState.items = [];
       const ACTUAL_STATE = itemSetCreator(startState, ACTION);
       expect(ACTUAL_STATE).toEqual(expectedState);
     });
