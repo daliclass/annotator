@@ -20,23 +20,25 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class GetProductForAnnotatedItemTest {
-
+    private static final String SUITABLE_FOR = "SUITABLE_FOR";
+    private static final String MEN = "MEN";
+    private static final String FEMALE = "FEMALE";
     private static final String USERNAME = "USERNAME";
     private static final Integer SUBJECT_ID = 1;
     private static final UUID SET_ID = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e5");
     private static final UUID SET_ID2 = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e6");
     private static final List<Fact> FACTS = new ArrayList<Fact>() {{
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE));
+        add(new Fact(SUITABLE_FOR, MEN));
+        add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<ItemFact> ITEM_FACTS = new ArrayList<ItemFact>() {{
-        add(new ItemFact(1, new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN), USERNAME));
-        add(new ItemFact(1, new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE), USERNAME));
-        add(new ItemFact(2, new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE), USERNAME));
+        add(new ItemFact(1, new Fact(SUITABLE_FOR, MEN), USERNAME));
+        add(new ItemFact(1, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
+        add(new ItemFact(2, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
     }};
     private static final List<Fact> EXPECTED_ITEM_FACTS = new ArrayList<Fact>() {{
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE));
+        add(new Fact(SUITABLE_FOR, MEN));
+        add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<Product> PRODUCTS = new ArrayList<Product>() {{
         add(new Product(0, "Microwave", "A green Microwave", 30.0, "image.url"));

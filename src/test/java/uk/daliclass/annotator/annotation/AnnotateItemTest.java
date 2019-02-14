@@ -18,9 +18,10 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class AnnotateItemTest {
-
+    private static final String SUITABLE_FOR = "SUITABLE_FOR";
+    private static final String MEN = "MEN";
     private static final List<Fact> ACTUAL_FACTS = new ArrayList<>() {{
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
+        add(new Fact(SUITABLE_FOR, MEN));
     }};
     private static final Integer ITEM_ID = 1;
     private static final String ANNOTATOR_NAME = "name";

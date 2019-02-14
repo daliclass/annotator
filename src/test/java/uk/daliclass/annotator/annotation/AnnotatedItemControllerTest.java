@@ -29,13 +29,18 @@ public class AnnotatedItemControllerTest {
 
     private static final String USERNAME = "USERNAME";
     private static final Integer SUBJECT_ID = 1;
+    private static final String SUITABLE_FOR = "SUITABLE_FOR";
+    private static final String MEN = "MEN";
+    private static final String FEMALE = "FEMALE";
+    private static final String IS_A = "IS_A";
+    private static final String SPORT = "SPORT";
     private static final UUID uuid = UUID.randomUUID();
     private static final List<Fact> POTENTIAL_FACTS = new ArrayList<>() {{
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE));
+        add(new Fact(SUITABLE_FOR, MEN));
+        add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<Fact> ACTUAL_FACTS = new ArrayList<>() {{
-        add(new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN));
+        add(new Fact(SUITABLE_FOR, MEN));
     }};
 
     @Mock
@@ -111,7 +116,7 @@ public class AnnotatedItemControllerTest {
     @Test
     public void whenGettingItemFactsForAItemId() {
         List<ItemFact> expectedItemFacts = new ArrayList<>() {{
-            add(new ItemFact(1, new Fact(Fact.Predicate.IS_A, Fact.Object.SPORT), "mark"));
+            add(new ItemFact(1, new Fact(IS_A, SPORT), "mark"));
         }};
         when(getFactsForItem.apply(1)).thenReturn(expectedItemFacts);
         AnnotationController<Product> productAnnotationController = createAnnotationController();

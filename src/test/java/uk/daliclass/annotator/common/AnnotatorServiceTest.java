@@ -38,9 +38,12 @@ public class AnnotatorServiceTest {
     public void exampleOfApiUsageForAnnotator() throws IOException {
         /* Potential facts are the information that a user of the API can map to a item
          */
+        String IS_A = "IS_A";
+        String ELECTRONIC = "ELECTRONIC";
+        String SPORT = "SPORT";
         List<Fact> potentialFacts = new ArrayList<>() {{
-            add(new Fact(Fact.Predicate.IS_A, Fact.Object.ELECTRONIC));
-            add(new Fact(Fact.Predicate.IS_A, Fact.Object.SPORT));
+            add(new Fact(IS_A, ELECTRONIC));
+            add(new Fact(IS_A, SPORT));
         }};
 
         /* Products are the Item in this case as its the generic used by the rest of the library
@@ -105,7 +108,7 @@ public class AnnotatorServiceTest {
 
         annotatorService.addAnnotationsToItem(
                 new ItemAnnotation(
-                        new ArrayList<>() {{add(new Fact(Fact.Predicate.IS_A, Fact.Object.SPORT));}},
+                        new ArrayList<>() {{add(new Fact(IS_A, SPORT));}},
                         productAnnotatorView.getItem().getItemId(),
                         "Mark",
                         actualItemSetView.getUuid())
@@ -114,12 +117,12 @@ public class AnnotatorServiceTest {
         assertNull(productAnnotatorView.getNextItemId());
 
         List<ItemFact> expectedItemFactsOne = new ArrayList<>() {{
-            add(new ItemFact(0, new Fact(Fact.Predicate.IS_A, Fact.Object.ELECTRONIC), "Mark"));
-            add(new ItemFact(0, new Fact(Fact.Predicate.IS_A, Fact.Object.SPORT), "Mark"));
+            add(new ItemFact(0, new Fact(IS_A, ELECTRONIC), "Mark"));
+            add(new ItemFact(0, new Fact(IS_A, SPORT), "Mark"));
         }};
 
         List<ItemFact> expectedItemFactsTwo = new ArrayList<>() {{
-            add(new ItemFact(1, new Fact(Fact.Predicate.IS_A, Fact.Object.SPORT), "Mark"));
+            add(new ItemFact(1, new Fact(IS_A, SPORT), "Mark"));
         }};
 
         List<ItemFact> actualItemFactsOne = annotatorService.getAnnotations(new AnnotationsRequest(0, actualItemSetView.getUuid()));

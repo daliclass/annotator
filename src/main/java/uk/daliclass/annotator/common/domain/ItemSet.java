@@ -9,7 +9,7 @@ import java.util.UUID;
 public class ItemSet<T> {
     private String name;
     private UUID uuid;
-    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.WRAPPER_ARRAY, property="@class")
+    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, property="@class")
     private List<T> items;
     private List<Fact> facts;
 

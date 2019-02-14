@@ -19,6 +19,12 @@ import static org.junit.Assert.assertTrue;
 
 public class FactFileSystemStorageTest {
 
+    private static final String IS_A = "IS_A";
+    private static final String ELECTRONIC = "ELECTRONIC";
+    private static final String SUITABLE_FOR = "SUITABLE_FOR";
+    private static final String MEN = "MEN";
+    private static final String FEMALE = "FEMALE";
+
     private Path FILE_PATH = Paths.get("./facts.json").toAbsolutePath();
 
     @After
@@ -28,16 +34,16 @@ public class FactFileSystemStorageTest {
 
     @Test
     public void whenProvidedAFactThenPersistToDisk() {
-        Fact fact = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
+        Fact fact = new Fact(SUITABLE_FOR, MEN);
         Log<Fact> log = new FactFileSystemStorage<>(FILE_PATH, Fact.class);
         assertTrue(log.create(fact));
     }
 
     @Test
     public void whenReadingFromTheFactsFileThenGetCorrectObjects() {
-        Fact factOne = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.MEN);
-        Fact factTwo = new Fact(Fact.Predicate.SUITABLE_FOR, Fact.Object.FEMALE);
-        Fact factThree = new Fact(Fact.Predicate.IS_A, Fact.Object.ELECTRONIC);
+        Fact factOne = new Fact(SUITABLE_FOR, MEN);
+        Fact factTwo = new Fact(SUITABLE_FOR, FEMALE);
+        Fact factThree = new Fact(IS_A, ELECTRONIC);
         Log<Fact> log = new FactFileSystemStorage<>(FILE_PATH, Fact.class);
         log.create(factOne);
         log.create(factTwo);
