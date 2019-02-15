@@ -11,7 +11,6 @@ import {
   setNameAction,
   setTypeAction,
   setFactAction,
-  createItemSetAction,
   uploadTemplateAction,
   downloadTemplateAction
 } from "./itemSetCreator.js";

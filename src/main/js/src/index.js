@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
+import {BrowserRouter} from "react-router-dom";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 
@@ -19,10 +20,12 @@ const theme = createMuiTheme({
 const store = createStore(itemSetCreator, applyMiddleware(logger, thunk));
 
 ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </MuiThemeProvider>,
+  <BrowserRouter>
+    <MuiThemeProvider theme={theme}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </MuiThemeProvider>
+  </BrowserRouter>,
   document.getElementById("root")
 );
