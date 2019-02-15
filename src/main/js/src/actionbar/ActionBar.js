@@ -11,9 +11,9 @@ export class ActionBar extends Component {
   render() {
     return (
       <AppBar style={{position: "relative"}}>
-        <Toolbar style={{"justify-content": "space-between"}}>
+        <Toolbar style={{justifyContent: "space-between"}}>
           <Typography variant="h6" color="inherit">
-            Page on
+            Annotate
           </Typography>
           <Toolbar>
             <Link to="/itemset/new">

@@ -6,8 +6,10 @@ import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.common.domain.ItemAnnotation;
+import uk.daliclass.annotator.common.domain.views.ItemSetView;
 import uk.daliclass.text.common.Text;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -35,5 +37,10 @@ public class ApplicationApi {
     @RequestMapping(value = "/annotate/text", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
     public void addProductsToAnnotate(@RequestBody ItemSet<Text> itemSet) {
         this.textAnnotatorService.addItemsToAnnotate(itemSet);
+    }
+
+    @GetMapping("/itemsets")
+    public List<ItemSetView> getTextItemSets() {
+        return this.textAnnotatorService.getItemSets();
     }
 }

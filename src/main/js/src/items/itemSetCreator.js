@@ -43,24 +43,35 @@ export function setFactAction(id, predicate, objects) {
   };
 }
 
+export function prepareItemSetToBeSent(state) {
+  let copyOfState = _.cloneDeep(state);
+  delete copyOfState.options;
+  delete copyOfState.type;
+  copyOfState.items = copyOfState.items.map(item => {
+    item["@class"] = "uk.daliclass.text.common.Text";
+    return item;
+  });
+
+  copyOfState.facts = copyOfState.facts.filter(fact => {
+    return fact.predicate && fact.objects && fact.objects.length > 0;
+  });
+
+  copyOfState.facts = copyOfState.facts.reduce((acc, fact) => {
+    fact.objects.forEach(object => {
+      acc.push({predicate: fact.predicate, object: object, id: 0});
+    });
+    return acc;
+  }, []);
+  copyOfState.uuid = uuidv4();
+  return copyOfState;
+}
+
 export function postItemSetAction() {
   return (dispatch, getState) => {
-    let state = _.cloneDeep(getState());
-
-    state.items = state.items.map(item => {
-      item["@class"] = "uk.daliclass.text.common.Text";
-      return item;
-    });
-
     fetch("http://localhost:8080/annotate/text", {
       method: "post",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        name: state.name,
-        uuid: uuidv4(),
-        facts: state.facts,
-        items: state.items
-      })
+      body: JSON.stringify(prepareItemSetToBeSent(getState()))
     }).then(function(response) {
       return {
         type: ACTIONS.CREATE_ITEM_SET,

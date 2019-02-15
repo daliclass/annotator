@@ -4,7 +4,8 @@ import {
   setNameAction,
   setTypeAction,
   setFactAction,
-  uploadTemplateAction
+  uploadTemplateAction,
+  prepareItemSetToBeSent
 } from "./itemSetCreator.js";
 import _ from "lodash";
 
@@ -129,6 +130,57 @@ describe("Given item set is being created", () => {
       expectedState.items = [];
       const ACTUAL_STATE = itemSetCreator(startState, ACTION);
       expect(ACTUAL_STATE).toEqual(expectedState);
+    });
+  });
+
+  describe("When preparing state to be sent to backend", () => {
+    const startState = cloneDefaultState();
+
+    startState.items = [
+      {
+        id: "1",
+        text: "Its turkish I love it"
+      },
+      {
+        id: "2",
+        text: "Whys a washing machine in the pub i need another drink"
+      }
+    ];
+    startState.facts = [
+      {
+        id: 0,
+        predicate: "Sentiment Analysis",
+        objects: ["Negative", "Possitive", "Neutral"],
+        itemId: 0
+      },
+      {id: 0, predicate: "", objects: [], itemId: 0}
+    ];
+    startState.name = "Twitter Sentiment Analysis";
+
+    const expectedPayload = {
+      name: "Twitter Sentiment Analysis",
+      facts: [
+        {predicate: "Sentiment Analysis", object: "Negative", id: 0},
+        {predicate: "Sentiment Analysis", object: "Possitive", id: 0},
+        {predicate: "Sentiment Analysis", object: "Neutral", id: 0}
+      ],
+      items: [
+        {
+          id: "1",
+          text: "Its turkish I love it",
+          "@class": "uk.daliclass.text.common.Text"
+        },
+        {
+          id: "2",
+          text: "Whys a washing machine in the pub i need another drink",
+          "@class": "uk.daliclass.text.common.Text"
+        }
+      ]
+    };
+
+    it("Then mutate the data to meet the domain model", () => {
+      const ACTUAL_STATE = prepareItemSetToBeSent(startState);
+      expect(ACTUAL_STATE).toEqual(expectedPayload);
     });
   });
 });
