@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import {applyMiddleware, createStore} from "redux";
+import {applyMiddleware, createStore, combineReducers} from "redux";
 import {BrowserRouter} from "react-router-dom";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
@@ -11,13 +11,20 @@ import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import "./index.css";
 import App from "./App";
 import {itemSetCreator} from "./items/itemSetCreator";
+import {itemSetViewer} from "./itemsets/itemSetViewer";
 
 const theme = createMuiTheme({
   typography: {
     fontSize: 16
   }
 });
-const store = createStore(itemSetCreator, applyMiddleware(logger, thunk));
+const store = createStore(
+  combineReducers({
+    itemSetViewer: itemSetViewer,
+    itemSetCreator: itemSetCreator
+  }),
+  applyMiddleware(logger, thunk)
+);
 
 ReactDOM.render(
   <BrowserRouter>

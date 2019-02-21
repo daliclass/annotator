@@ -71,7 +71,7 @@ export function postItemSetAction() {
     fetch("http://localhost:8080/annotate/text", {
       method: "post",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(prepareItemSetToBeSent(getState()))
+      body: JSON.stringify(prepareItemSetToBeSent(getState().itemSetCreator))
     }).then(function(response) {
       return {
         type: ACTIONS.CREATE_ITEM_SET,

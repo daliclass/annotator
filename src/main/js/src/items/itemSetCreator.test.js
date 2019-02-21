@@ -180,6 +180,7 @@ describe("Given item set is being created", () => {
 
     it("Then mutate the data to meet the domain model", () => {
       const ACTUAL_STATE = prepareItemSetToBeSent(startState);
+      delete ACTUAL_STATE.uuid;
       expect(ACTUAL_STATE).toEqual(expectedPayload);
     });
   });

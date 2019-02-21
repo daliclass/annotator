@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import ItemSetForm from "./items/ItemSetForm.js";
 import {ActionBar} from "./actionbar/ActionBar.js";
-import {ItemSets} from "./itemsets/ItemSets.js";
+import ItemSets from "./itemsets/ItemSets.js";
 import {Switch, Route} from "react-router-dom";
 import {
   parseTemplateAction,
   postItemSetAction
 } from "./items/itemSetCreator.js";
+import {getItemSetAction} from "./itemsets/itemSetViewer.js";
 
 class App extends Component {
   render() {
@@ -26,7 +27,14 @@ class App extends Component {
               );
             }}
           />
-          <Route exact path="/itemsets" component={ItemSets} />; />
+          <Route
+            exact
+            path="/itemsets"
+            render={props => {
+              return <ItemSets loadItemSets={getItemSetAction} />;
+            }}
+          />
+          ;
         </Switch>
       </div>
     );

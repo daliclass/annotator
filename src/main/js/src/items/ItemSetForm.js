@@ -128,10 +128,10 @@ export class ItemSetForm extends Component {
 
 const mapStateToProps = function(state) {
   return {
-    name: state.name,
-    type: state.type,
-    options: state.options,
-    facts: state.facts
+    name: state.itemSetCreator.name,
+    type: state.itemSetCreator.type,
+    options: state.itemSetCreator.options,
+    facts: state.itemSetCreator.facts
   };
 };
 
