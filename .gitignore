@@ -3,3 +3,6 @@ target/
 *.iml
 src/main/js/node_modules/
 src/main/js/public/
+package-lock.json
+textItemSets.log
+.DS_Store

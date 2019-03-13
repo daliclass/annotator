@@ -24,7 +24,7 @@ public class GetProductForAnnotatedItemTest {
     private static final String MEN = "MEN";
     private static final String FEMALE = "FEMALE";
     private static final String USERNAME = "USERNAME";
-    private static final Integer SUBJECT_ID = 1;
+    private static final Integer SUBJECT_ID = 5;
     private static final UUID SET_ID = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e5");
     private static final UUID SET_ID2 = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e6");
     private static final List<Fact> FACTS = new ArrayList<Fact>() {{
@@ -32,17 +32,17 @@ public class GetProductForAnnotatedItemTest {
         add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<ItemFact> ITEM_FACTS = new ArrayList<ItemFact>() {{
-        add(new ItemFact(1, new Fact(SUITABLE_FOR, MEN), USERNAME));
-        add(new ItemFact(1, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
-        add(new ItemFact(2, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
+        add(new ItemFact(5, new Fact(SUITABLE_FOR, MEN), USERNAME));
+        add(new ItemFact(5, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
+        add(new ItemFact(10, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
     }};
     private static final List<Fact> EXPECTED_ITEM_FACTS = new ArrayList<Fact>() {{
         add(new Fact(SUITABLE_FOR, MEN));
         add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<Product> PRODUCTS = new ArrayList<Product>() {{
-        add(new Product(0, "Microwave", "A green Microwave", 30.0, "image.url"));
-        add(new Product(1, "Toaster", "A green toaster", 20.0, "image.url"));
+        add(new Product(5, "Microwave", "A green Microwave", 30.0, "image.url"));
+        add(new Product(10, "Toaster", "A green toaster", 20.0, "image.url"));
     }};
 
     @Mock
@@ -83,7 +83,7 @@ public class GetProductForAnnotatedItemTest {
         mockItemSets();
 
         Product expectedProduct =
-                new Product(1, "Toaster", "A green toaster", 20.0, "image.url");
+                new Product(10, "Toaster", "A green toaster", 20.0, "image.url");
         GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
         AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
                 new ItemToAnnotateRequest(SET_ID2, USERNAME, SUBJECT_ID));
@@ -96,8 +96,8 @@ public class GetProductForAnnotatedItemTest {
 
         GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
         AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
-                new ItemToAnnotateRequest(SET_ID, USERNAME, 0));
-        assertEquals(Integer.valueOf(1), productAnnotatedItem.nextItemId);
+                new ItemToAnnotateRequest(SET_ID, USERNAME, 5));
+        assertEquals(Integer.valueOf(10), productAnnotatedItem.nextItemId);
     }
 
     @Test
@@ -108,6 +108,16 @@ public class GetProductForAnnotatedItemTest {
         AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
                 new ItemToAnnotateRequest(SET_ID2, USERNAME, SUBJECT_ID));
         assertEquals(null, productAnnotatedItem.nextItemId);
+    }
+
+    @Test
+    public void whenProvidedANullItemIdThenProvideFirstItemId() {
+        mockItemSets();
+        GetItemForAnnotation<Product> getItemForAnnotation = new GetItemForAnnotation<>(itemFactLog, productLog);
+        AnnotatedItem<Product> productAnnotatedItem = getItemForAnnotation.apply(
+                new ItemToAnnotateRequest(SET_ID, USERNAME, null));
+        assertEquals(Integer.valueOf(5), productAnnotatedItem.item.getItemId());
+
     }
 
     public void mockItemSets() {

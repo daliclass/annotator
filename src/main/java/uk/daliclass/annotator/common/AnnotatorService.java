@@ -33,10 +33,10 @@ public class AnnotatorService<T extends Idable> {
                     ItemSet.class);
 
         annotationController = new AnnotationController<T>(
-                new GetItemForAnnotation(itemFactLog, itemSetLog), // DONE
+                new GetItemForAnnotation<>(itemFactLog, itemSetLog), // DONE
                 new AnnotateItem(itemFactLog),
                 new GetFactsForItem(itemFactLog),
-                new GetItemSets(itemSetLog),
+                new GetItemSets<>(itemSetLog),
                 new AddItemsToAnnotate<T>(itemSetLog)
         );
     }

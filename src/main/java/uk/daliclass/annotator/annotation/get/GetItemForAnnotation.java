@@ -45,10 +45,12 @@ public class GetItemForAnnotation<T extends Idable> implements Function<ItemToAn
                         .filter(item -> item.getItemId() == itemToAnnotateRequest.getItemId())
                         .findFirst();
 
-        annotatedItem.item = productOptional.orElse(null);
+        annotatedItem.item = productOptional.orElse(requestedItemSet.getItems().get(0));
 
-        if (annotatedItem.item.getItemId() + 1 < requestedItemSet.getItems().size()) {
-            annotatedItem.nextItemId = annotatedItem.item.getItemId() + 1;
+
+
+        if (requestedItemSet.getItems().indexOf(annotatedItem.item) < requestedItemSet.getItems().size() -1) {
+            annotatedItem.nextItemId = requestedItemSet.getItems().get(requestedItemSet.getItems().indexOf(annotatedItem.item) + 1).getItemId();
         }
         return annotatedItem;
     }
