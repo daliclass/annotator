@@ -21,7 +21,7 @@ public class ApplicationApi {
         this.textAnnotatorService = textAnnotatorService;
     }
 
-    @GetMapping("/product/{id}/annotation/{annotator}")
+    @GetMapping("/itemset/{uuid}/item/{id}/annotation/{annotator}")
     public AnnotatorView<Text> getProductToAnnotate(@PathVariable("uuid") String uuid,
                                                        @PathVariable("id") Integer itemId,
                                                        @PathVariable("annotator") String annotator) {

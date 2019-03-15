@@ -1,7 +1,5 @@
 package uk.daliclass.annotator.common.domain.requests;
 
-import uk.daliclass.product.common.Product;
-
 import java.util.UUID;
 
 public class ItemToAnnotateRequest {

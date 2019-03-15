@@ -124,7 +124,7 @@ export function itemSetCreator(state = DEFAULT_STATE, action) {
       selectedFact.predicate = action.payload.predicate;
       selectedFact.objects = action.payload.objects;
       copyOfState.facts = removeEmptyFacts(copyOfState.facts);
-      copyOfState.facts.push({id: Math.random(), predicate: "", objects: []});
+      copyOfState.facts.push({id: copyOfState.facts.length, predicate: "", objects: []});
       break;
     case ACTIONS.UPLOAD_TEMPLATE:
       if (action.payload === undefined) {

@@ -12,6 +12,7 @@ import "./index.css";
 import App from "./App";
 import {itemSetCreator} from "./items/itemSetCreator";
 import {itemSetViewer} from "./itemsets/itemSetViewer";
+import {itemAnnotation} from "./annotation/itemAnnotation";
 
 const theme = createMuiTheme({
   typography: {
@@ -21,7 +22,8 @@ const theme = createMuiTheme({
 const store = createStore(
   combineReducers({
     itemSetViewer: itemSetViewer,
-    itemSetCreator: itemSetCreator
+    itemSetCreator: itemSetCreator,
+    itemAnnotation: itemAnnotation
   }),
   applyMiddleware(logger, thunk)
 );

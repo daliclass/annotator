@@ -9,6 +9,7 @@ import {
   postItemSetAction
 } from "./items/itemSetCreator.js";
 import {TextAnnotation} from './annotation/TextAnnotation.js';
+import Annotation from './annotation/Annotation.js';
 import {getItemSetAction} from "./itemsets/itemSetViewer.js";
 
 class App extends Component {
@@ -40,7 +41,11 @@ class App extends Component {
             exact
             path={ANNOTATE_ITEM_SET_ROUTE}
             render={props => {
-              return <TextAnnotation itemSetId={props.match.params.id}/>
+              return (
+                <Annotation
+                  annotationType={TextAnnotation}
+                  onAnnotation={()=>{}}
+                />)
             }}
           />
         </Switch>

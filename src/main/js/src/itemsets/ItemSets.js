@@ -7,7 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import {ANNOTATE_ITEM_SET} from '../routes.js';
+import {ANNOTATE_ITEM_SET} from "../routes.js";
 
 export class ItemSets extends Component {
   componentDidMount() {
@@ -34,9 +34,7 @@ export class ItemSets extends Component {
                 <TableCell>{itemSet.numberOfItems}</TableCell>
                 <TableCell>
                   <Link to={ANNOTATE_ITEM_SET(itemSet.uuid)}>
-                    <Button>
-                      Annotate {itemSet.numberOfItems} items
-                    </Button>
+                    <Button>Annotate {itemSet.numberOfItems} items</Button>
                   </Link>
                 </TableCell>
               </TableRow>
@@ -49,7 +47,6 @@ export class ItemSets extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state);
   return {
     itemSets: state.itemSetViewer.itemSets
   };

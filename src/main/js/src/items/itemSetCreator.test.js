@@ -9,13 +9,6 @@ import {
 } from "./itemSetCreator.js";
 import _ from "lodash";
 
-const RANDOM_NUMBER = 0.5;
-const mockMath = Object.create(global.Math);
-mockMath.random = () => {
-  return RANDOM_NUMBER;
-};
-global.Math = mockMath;
-
 function cloneDefaultState() {
   return _.cloneDeep(DEFAULT_STATE);
 }
@@ -56,8 +49,8 @@ describe("Given item set is being created", () => {
     it("Then update fact state and render a additional fact field", () => {
       const expected_predicate = "suitable for";
       EXPECTED_STATE.facts = [
-        {id: id, predicate: expected_predicate, objects: objects},
-        {id: RANDOM_NUMBER, predicate: "", objects: []}
+        {id: 0, predicate: expected_predicate, objects: objects},
+        {id: 1, predicate: "", objects: []}
       ];
       const ACTUAL_STATE = itemSetCreator(cloneDefaultState(), action);
       expect(ACTUAL_STATE).toEqual(EXPECTED_STATE);
@@ -68,13 +61,13 @@ describe("Given item set is being created", () => {
     const START_STATE = cloneDefaultState();
     const ID = START_STATE.facts[0].id;
     START_STATE.facts = [
-      {id: ID, predicate: "foo", objects: ["bar"]},
-      {id: RANDOM_NUMBER, predicate: "", objects: []}
+      {id: 0, predicate: "foo", objects: ["bar"]},
+      {id: 1, predicate: "", objects: []}
     ];
     const action = setFactAction(ID, "", []);
     it("Then don't create additional blank fact state", () => {
       const EXPECTED_STATE = cloneDefaultState();
-      EXPECTED_STATE.facts = [{id: RANDOM_NUMBER, predicate: "", objects: []}];
+      EXPECTED_STATE.facts = [{id: 0, predicate: "", objects: []}];
       const ACTUAL_STATE = itemSetCreator(START_STATE, action);
       expect(ACTUAL_STATE).toEqual(EXPECTED_STATE);
     });
