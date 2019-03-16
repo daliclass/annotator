@@ -1,27 +1,30 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {TextAnnotation} from './TextAnnotation.js';
+import {TextAnnotation} from "./TextAnnotation.js";
 import {shallow} from "enzyme";
-import {updatePredicatesAction, itemAnnotatedAction, startingAnnotationAction} from './itemAnnotation.js'
+import {
+  updatePredicatesAction,
+  itemAnnotatedAction,
+  startingAnnotationAction
+} from "./itemAnnotation.js";
 
 export class Annotation extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.onPredicateChange = this.onPredicateChange.bind(this);
     this.onComplete = this.onComplete.bind(this);
   }
 
+  componentDidMount() {
+    this.props.dispatch(startingAnnotationAction(this.props.itemSetId));
+  }
+
   onPredicateChange(predicates) {
-    this.props.dispatch(updatePredicatesAction(predicates))
+    this.props.dispatch(updatePredicatesAction(predicates));
   }
 
   onComplete(predicates) {
-    this.props.dispatch(itemAnnotatedAction(predicates))
-  }
-
-  componentDidMount() {
-    this.props.dispatch(startingAnnotationAction())
+    this.props.dispatch(itemAnnotatedAction(predicates));
   }
 
   render() {
