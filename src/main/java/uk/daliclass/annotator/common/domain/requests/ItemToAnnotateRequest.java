@@ -1,7 +1,10 @@
 package uk.daliclass.annotator.common.domain.requests;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.UUID;
 
+@EqualsAndHashCode
 public class ItemToAnnotateRequest {
     private UUID uuid;
     private String username;
@@ -31,15 +34,5 @@ public class ItemToAnnotateRequest {
 
     public Integer getItemId() {
         return itemId;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof ItemToAnnotateRequest)) return false;
-        ItemToAnnotateRequest request = (ItemToAnnotateRequest) other;
-        if (this.uuid != request.uuid) return false;
-        if (this.username != request.username) return false;
-        if (this.itemId != ((ItemToAnnotateRequest) other).itemId) return false;
-        return true;
     }
 }

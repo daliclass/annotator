@@ -1,19 +1,22 @@
 package uk.daliclass.annotator.common.domain;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ItemSet<T> {
+@EqualsAndHashCode
+public class ItemSet<T extends Idable> {
     private String name;
     private UUID uuid;
-    @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, property="@class")
+    @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
     private List<T> items;
     private List<Fact> facts;
 
-    public ItemSet() {}
+    public ItemSet() {
+    }
 
     public ItemSet(String name, List<T> items) {
         this.name = name;

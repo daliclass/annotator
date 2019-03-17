@@ -3,19 +3,18 @@ package uk.daliclass.annotator.annotation.get;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
-import uk.daliclass.product.common.Product;
 import uk.daliclass.annotator.common.storage.Log;
+import uk.daliclass.product.common.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 

@@ -1,5 +1,8 @@
 package uk.daliclass.annotator.common.domain;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class Fact {
 
     private String predicate;
@@ -42,14 +45,5 @@ public class Fact {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (!(o instanceof Fact)) return false;
-        Fact other = (Fact) o;
-        if (!this.object.equals(other.object)) return false;
-        if (!this.predicate.equals(other.predicate)) return false;
-        return true;
     }
 }

@@ -17,7 +17,7 @@ public class AnnotateItem implements Consumer<ItemAnnotation> {
 
     @Override
     public void accept(ItemAnnotation itemAnnotation) {
-        for (Fact fact: itemAnnotation.getItemFacts()) {
+        for (Fact fact : itemAnnotation.getItemFacts()) {
             itemFactLog.create(new ItemFact(itemAnnotation.getItemId(), fact, itemAnnotation.getAnnotatorName()));
         }
     }

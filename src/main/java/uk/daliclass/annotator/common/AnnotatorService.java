@@ -2,7 +2,10 @@ package uk.daliclass.annotator.common;
 
 import uk.daliclass.annotator.annotation.*;
 import uk.daliclass.annotator.annotation.get.GetItemForAnnotation;
-import uk.daliclass.annotator.common.domain.*;
+import uk.daliclass.annotator.common.domain.Idable;
+import uk.daliclass.annotator.common.domain.ItemAnnotation;
+import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.domain.requests.AnnotationsRequest;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.annotator.common.domain.views.AnnotatorView;
@@ -29,8 +32,8 @@ public class AnnotatorService<T extends Idable> {
 
         Log<ItemSet<T>> itemSetLog =
                 new FactFileSystemStorage<>(
-                    itemSetFile,
-                    ItemSet.class);
+                        itemSetFile,
+                        ItemSet.class);
 
         annotationController = new AnnotationController<T>(
                 new GetItemForAnnotation<>(itemFactLog, itemSetLog), // DONE

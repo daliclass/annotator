@@ -1,13 +1,13 @@
 package uk.daliclass.annotator.annotation;
 
+import uk.daliclass.annotator.annotation.get.AnnotatedItem;
+import uk.daliclass.annotator.annotation.get.GetItemForAnnotation;
+import uk.daliclass.annotator.common.domain.Idable;
+import uk.daliclass.annotator.common.domain.ItemAnnotation;
+import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.annotator.common.domain.views.AnnotatorView;
-import uk.daliclass.annotator.common.domain.Idable;
-import uk.daliclass.annotator.annotation.get.AnnotatedItem;
-import uk.daliclass.annotator.annotation.get.GetItemForAnnotation;
-import uk.daliclass.annotator.common.domain.ItemAnnotation;
-import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.views.ItemSetView;
 
 import java.util.List;

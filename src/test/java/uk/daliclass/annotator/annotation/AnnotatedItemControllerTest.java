@@ -3,14 +3,14 @@ package uk.daliclass.annotator.annotation;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import uk.daliclass.annotator.common.domain.ItemSet;
-import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
-import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.annotation.get.AnnotatedItem;
 import uk.daliclass.annotator.annotation.get.GetItemForAnnotation;
 import uk.daliclass.annotator.common.domain.Fact;
 import uk.daliclass.annotator.common.domain.ItemAnnotation;
 import uk.daliclass.annotator.common.domain.ItemFact;
+import uk.daliclass.annotator.common.domain.ItemSet;
+import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
+import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.common.domain.views.ItemSetView;
 import uk.daliclass.product.common.Product;
 
@@ -20,9 +20,7 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class AnnotatedItemControllerTest {
@@ -155,8 +153,8 @@ public class AnnotatedItemControllerTest {
         itemSet2.setFacts(POTENTIAL_FACTS);
 
         List<ItemSet<Product>> itemSets = new ArrayList<>() {{
-           add(itemSet);
-           add(itemSet2);
+            add(itemSet);
+            add(itemSet2);
         }};
 
         when(getItemSets.get()).thenReturn(itemSets);

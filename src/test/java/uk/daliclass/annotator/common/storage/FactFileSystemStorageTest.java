@@ -4,12 +4,9 @@ import org.junit.After;
 import org.junit.Test;
 import uk.daliclass.annotator.common.domain.Fact;
 import uk.daliclass.annotator.common.domain.ItemSet;
-import uk.daliclass.annotator.common.storage.FactFileSystemStorage;
-import uk.daliclass.annotator.common.storage.Log;
 import uk.daliclass.product.common.Product;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;

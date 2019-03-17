@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ProductControllerTest {
@@ -40,7 +38,9 @@ public class ProductControllerTest {
     public void whenGettingProductsThenGetAllProducts() {
         Product product = new Product();
         ProductController productController = new ProductController(createProduct, getProducts);
-        when(getProducts.get()).thenReturn(new ArrayList<>() {{ add(product); }});
+        when(getProducts.get()).thenReturn(new ArrayList<>() {{
+            add(product);
+        }});
         productController.getProducts();
     }
 }

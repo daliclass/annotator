@@ -42,7 +42,7 @@ public class AnnotateItemTest {
         List<ItemFact> expectedItemFacts = ACTUAL_FACTS.stream()
                 .map(actualFact -> new ItemFact(ITEM_ID, actualFact, ANNOTATOR_NAME))
                 .collect(Collectors.toList());
-        for (ItemFact itemFact: expectedItemFacts) {
+        for (ItemFact itemFact : expectedItemFacts) {
             verify(itemFactLog, times(1)).create(itemFact);
         }
     }

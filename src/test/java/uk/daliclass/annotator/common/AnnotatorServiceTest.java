@@ -2,13 +2,13 @@ package uk.daliclass.annotator.common;
 
 import org.junit.After;
 import org.junit.Test;
+import uk.daliclass.annotator.common.domain.Fact;
+import uk.daliclass.annotator.common.domain.ItemAnnotation;
+import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.ItemSet;
 import uk.daliclass.annotator.common.domain.requests.AnnotationsRequest;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.annotator.common.domain.views.AnnotatorView;
-import uk.daliclass.annotator.common.domain.Fact;
-import uk.daliclass.annotator.common.domain.ItemAnnotation;
-import uk.daliclass.annotator.common.domain.ItemFact;
 import uk.daliclass.annotator.common.domain.views.ItemSetView;
 import uk.daliclass.product.common.Product;
 
@@ -49,12 +49,12 @@ public class AnnotatorServiceTest {
         /* Products are the Item in this case as its the generic used by the rest of the library
          */
         List<Product> products = new ArrayList<>() {{
-           add(new Product(0,
-                   "Bush Mega Toaster",
-                   "All about the bush mega toaster",
-                   50.0,
-                   "http://imageurl.com")
-           );
+            add(new Product(0,
+                    "Bush Mega Toaster",
+                    "All about the bush mega toaster",
+                    50.0,
+                    "http://imageurl.com")
+            );
             add(new Product(1,
                     "Sports Toaster",
                     "All about the Sports toaster",
@@ -103,12 +103,14 @@ public class AnnotatorServiceTest {
 
         productAnnotatorView = annotatorService.
                 getItemToAnnotate(new ItemToAnnotateRequest(
-                        actualItemSetView.getUuid(),"Mark", productAnnotatorView.getNextItemId())
+                        actualItemSetView.getUuid(), "Mark", productAnnotatorView.getNextItemId())
                 );
 
         annotatorService.addAnnotationsToItem(
                 new ItemAnnotation(
-                        new ArrayList<>() {{add(new Fact(IS_A, SPORT));}},
+                        new ArrayList<>() {{
+                            add(new Fact(IS_A, SPORT));
+                        }},
                         productAnnotatorView.getItem().getItemId(),
                         "Mark",
                         actualItemSetView.getUuid())

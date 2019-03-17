@@ -9,7 +9,8 @@ public class ItemAnnotation {
     private String annotatorName;
     private UUID itemSetUuid;
 
-    public ItemAnnotation() {}
+    public ItemAnnotation() {
+    }
 
     public ItemAnnotation(List<Fact> itemFacts, Integer itemId, String annotatorName, UUID itemSetUuid) {
         this.itemFacts = itemFacts;

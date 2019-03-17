@@ -1,7 +1,10 @@
 package uk.daliclass.annotator.common.domain.views;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.UUID;
 
+@EqualsAndHashCode
 public class ItemSetView {
     private String name;
     private UUID uuid;
@@ -35,15 +38,5 @@ public class ItemSetView {
 
     public void setNumberOfItems(Integer numberOfItems) {
         this.numberOfItems = numberOfItems;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof ItemSetView)) return false;
-        ItemSetView other = (ItemSetView) o;
-        if (!this.name.equals(other.name)) return false;
-        if (!this.uuid.equals(other.uuid)) return false;
-        if (this.numberOfItems != other.numberOfItems) return false;
-        return true;
     }
 }

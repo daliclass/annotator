@@ -48,8 +48,7 @@ public class GetItemForAnnotation<T extends Idable> implements Function<ItemToAn
         annotatedItem.item = productOptional.orElse(requestedItemSet.getItems().get(0));
 
 
-
-        if (requestedItemSet.getItems().indexOf(annotatedItem.item) < requestedItemSet.getItems().size() -1) {
+        if (requestedItemSet.getItems().indexOf(annotatedItem.item) < requestedItemSet.getItems().size() - 1) {
             annotatedItem.nextItemId = requestedItemSet.getItems().get(requestedItemSet.getItems().indexOf(annotatedItem.item) + 1).getItemId();
         }
         return annotatedItem;

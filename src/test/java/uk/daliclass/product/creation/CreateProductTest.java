@@ -8,9 +8,7 @@ import uk.daliclass.product.common.Product;
 
 import java.util.ArrayList;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CreateProductTest {
@@ -36,7 +34,9 @@ public class CreateProductTest {
         CreateProduct createProduct = new CreateProduct(productLog);
         Product productOne = new Product();
         Product productTwo = new Product();
-        when(productLog.read()).thenReturn(new ArrayList<>() {{ add(productOne); }});
+        when(productLog.read()).thenReturn(new ArrayList<>() {{
+            add(productOne);
+        }});
         createProduct.accept(productTwo);
         verify(productLog, times(0)).create(productTwo);
     }

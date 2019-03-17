@@ -1,9 +1,10 @@
 package uk.daliclass.product.common;
 
 
+import lombok.EqualsAndHashCode;
 import uk.daliclass.annotator.common.domain.Idable;
 
-
+@EqualsAndHashCode
 public class Product implements Idable {
     private Integer itemId;
     private String name;
@@ -59,21 +60,8 @@ public class Product implements Idable {
         return itemId;
     }
 
+    @Override
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
-    }
-
-    @Override
-    public boolean equals(java.lang.Object o) {
-        if (!(o instanceof Product)) return false;
-        Product other = (Product) o;
-        if (this.itemId != other.itemId) return false;
-        if (!(this.cost == null && other.cost == null)) {
-            if (!this.cost.equals(other.cost)) return false;
-        }
-        if (this.description != other.description) return false;
-        if (this.imageUrl != other.imageUrl) return false;
-        if (this.name != other.name) return false;
-        return true;
     }
 }

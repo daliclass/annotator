@@ -1,5 +1,8 @@
 package uk.daliclass.annotator.common.domain;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class ItemFact {
     private String annotatorName;
     private Integer itemId;
@@ -37,15 +40,5 @@ public class ItemFact {
 
     public void setFact(Fact fact) {
         this.fact = fact;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof ItemFact)) return false;
-        ItemFact other = (ItemFact) o;
-        if (this.itemId != other.itemId) return false;
-        if (!this.fact.equals(other.fact)) return false;
-        if (!this.annotatorName.equals(other.annotatorName)) return false;
-        return true;
     }
 }
