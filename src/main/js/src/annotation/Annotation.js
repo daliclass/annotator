@@ -5,7 +5,8 @@ import {shallow} from "enzyme";
 import {
   updatePredicatesAction,
   itemAnnotatedAction,
-  startingAnnotationAction
+  startingAnnotationAction,
+  getFirstItemToAnnotate
 } from "./itemAnnotation.js";
 
 export class Annotation extends Component {
@@ -17,6 +18,7 @@ export class Annotation extends Component {
 
   componentDidMount() {
     this.props.dispatch(startingAnnotationAction(this.props.itemSetId));
+    this.props.dispatch(getFirstItemToAnnotate(this.props.itemSetId));
   }
 
   onPredicateChange(predicates) {

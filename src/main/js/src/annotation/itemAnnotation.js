@@ -21,7 +21,8 @@ export const DEFAULT_STATE = {
     }
   ],
   annotationCompleted: undefined,
-  itemSetId: undefined
+  itemSetId: undefined,
+  nextItemId: undefined
 };
 
 const ACTIONS = {
@@ -34,6 +35,57 @@ const ACTIONS = {
 
 export function startingAnnotationAction(itemSetId) {
   return {type: ACTIONS.STARTING_ANNOTATION, payload: {itemSetId: itemSetId}};
+}
+
+export function getFirstItemToAnnotate(itemSetId) {
+  return (dispatch, getState) => {
+    fetch(
+      "http://localhost:8080/itemset/" + itemSetId + "/item/0/annotation/null",
+      {
+        method: "get",
+        headers: {"Content-Type": "application/json"}
+      }
+    )
+      .then(resp => resp.json())
+      .then(annotatorView => {
+        transformAnnotatorView(annotatorView, dispatch);
+      });
+  };
+}
+
+export function transformAnnotatorView(annotatorView, dispatch) {
+  let annotatorViewCopy = _.cloneDeep(annotatorView);
+  const subject = annotatorView.item.text;
+  const nextItemId = annotatorView.nextItemId;
+  const predicates = [];
+
+  for (var i = 0; i < annotatorViewCopy.potentialFacts.length; i++) {
+    let potentialFact = annotatorViewCopy.potentialFacts[i];
+
+    let foundPredicate = predicates.findIndex(
+      predicate => potentialFact.predicate === predicate.predicate
+    );
+
+    if (foundPredicate === -1) {
+      predicates.push({
+        predicate: potentialFact.predicate,
+        objects: [{object: potentialFact.object, id: potentialFact.id}]
+      });
+    } else {
+      predicates[foundPredicate].objects.push({
+        object: potentialFact.object,
+        id: potentialFact.id
+      });
+    }
+  }
+
+  dispatch(
+    newItemForAnnotationAction({
+      predicates: predicates,
+      subject: subject,
+      nextItemId: nextItemId
+    })
+  );
 }
 
 export function updatePredicatesAction(updatedPredicates) {
@@ -72,6 +124,7 @@ export function itemAnnotation(state = DEFAULT_STATE, action) {
     case ACTIONS.NEW_ITEM_FOR_ANNOTATION:
       copyOfState.predicates = action.payload.predicates;
       copyOfState.subject = action.payload.subject;
+      copyOfState.nextItemId = action.payload.nextItemId;
       break;
     case ACTIONS.COMPLETED_ANNOTATION:
       copyOfState.predicates = [];
