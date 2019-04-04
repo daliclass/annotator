@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class GetProductForAnnotatedItemTest {
+public class GetItemForAnnotationTest {
     private static final String SUITABLE_FOR = "SUITABLE_FOR";
     private static final String MEN = "MEN";
     private static final String FEMALE = "FEMALE";
@@ -31,9 +31,9 @@ public class GetProductForAnnotatedItemTest {
         add(new Fact(SUITABLE_FOR, FEMALE));
     }};
     private static final List<ItemFact> ITEM_FACTS = new ArrayList<ItemFact>() {{
-        add(new ItemFact(5, new Fact(SUITABLE_FOR, MEN), USERNAME));
-        add(new ItemFact(5, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
-        add(new ItemFact(10, new Fact(SUITABLE_FOR, FEMALE), USERNAME));
+        add(new ItemFact(5, new Fact(SUITABLE_FOR, MEN), USERNAME, SET_ID));
+        add(new ItemFact(5, new Fact(SUITABLE_FOR, FEMALE), USERNAME, SET_ID));
+        add(new ItemFact(10, new Fact(SUITABLE_FOR, FEMALE), USERNAME, SET_ID));
     }};
     private static final List<Fact> EXPECTED_ITEM_FACTS = new ArrayList<Fact>() {{
         add(new Fact(SUITABLE_FOR, MEN));

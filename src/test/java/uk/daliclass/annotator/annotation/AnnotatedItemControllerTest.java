@@ -114,12 +114,12 @@ public class AnnotatedItemControllerTest {
     @Test
     public void whenGettingItemFactsForAItemId() {
         List<ItemFact> expectedItemFacts = new ArrayList<>() {{
-            add(new ItemFact(1, new Fact(IS_A, SPORT), "mark"));
+            add(new ItemFact(1, new Fact(IS_A, SPORT), "mark", uuid));
         }};
-        when(getFactsForItem.apply(1)).thenReturn(expectedItemFacts);
+        when(getFactsForItem.apply(1, uuid)).thenReturn(expectedItemFacts);
         AnnotationController<Product> productAnnotationController = createAnnotationController();
-        List<ItemFact> actualProductsToAnnotate = productAnnotationController.getFactsForItem(1);
-        verify(getFactsForItem, times(1)).apply(1);
+        List<ItemFact> actualProductsToAnnotate = productAnnotationController.getFactsForItem(1, uuid);
+        verify(getFactsForItem, times(1)).apply(1, uuid);
         assertEquals(expectedItemFacts, actualProductsToAnnotate);
     }
 

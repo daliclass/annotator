@@ -57,7 +57,8 @@ public class AnnotatorService<T extends Idable> {
     }
 
     public List<ItemFact> getAnnotations(AnnotationsRequest annotationsRequest) {
-        return annotationController.getFactsForItem(annotationsRequest.getItemId());
+        // TODO Pass UUID in
+        return annotationController.getFactsForItem(annotationsRequest.getItemId(), annotationsRequest.getItemSetUuid());
     }
 
     public void addItemsToAnnotate(ItemSet<T> itemSet) {

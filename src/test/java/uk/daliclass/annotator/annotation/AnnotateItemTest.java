@@ -25,6 +25,7 @@ public class AnnotateItemTest {
     }};
     private static final Integer ITEM_ID = 1;
     private static final String ANNOTATOR_NAME = "name";
+    private static final UUID uuid = UUID.randomUUID();
 
     @Mock
     Log<ItemFact> itemFactLog;
@@ -36,11 +37,11 @@ public class AnnotateItemTest {
 
     @Test
     public void whenAnnotatingAItemThenStoreAnnotationInAnnotationLog() {
-        ItemAnnotation itemAnnotation = new ItemAnnotation(ACTUAL_FACTS, ITEM_ID, ANNOTATOR_NAME, UUID.randomUUID());
+        ItemAnnotation itemAnnotation = new ItemAnnotation(ACTUAL_FACTS, ITEM_ID, ANNOTATOR_NAME, uuid);
         AnnotateItem annotateItem = new AnnotateItem(itemFactLog);
         annotateItem.accept(itemAnnotation);
         List<ItemFact> expectedItemFacts = ACTUAL_FACTS.stream()
-                .map(actualFact -> new ItemFact(ITEM_ID, actualFact, ANNOTATOR_NAME))
+                .map(actualFact -> new ItemFact(ITEM_ID, actualFact, ANNOTATOR_NAME, uuid))
                 .collect(Collectors.toList());
         for (ItemFact itemFact : expectedItemFacts) {
             verify(itemFactLog, times(1)).create(itemFact);

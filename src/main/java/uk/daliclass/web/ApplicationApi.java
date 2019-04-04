@@ -29,8 +29,8 @@ public class ApplicationApi {
                 new ItemToAnnotateRequest(UUID.fromString(uuid), annotator, itemId));
     }
 
-    @PostMapping("/text/annotation")
-    public void addAnnotationsToProduct(ItemAnnotation itemAnnotation) {
+    @PostMapping(value = "/text/annotation", consumes = "application/json", produces = "application/json")
+    public void addAnnotationsToItem(@RequestBody ItemAnnotation itemAnnotation) {
         this.textAnnotatorService.addAnnotationsToItem(itemAnnotation);
     }
 

@@ -11,6 +11,7 @@ import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.common.domain.views.ItemSetView;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -47,8 +48,8 @@ public class AnnotationController<T extends Idable> {
         annotateItem.accept(itemAnnotation);
     }
 
-    public List<ItemFact> getFactsForItem(Integer itemId) {
-        return this.getFactsForItem.apply(itemId);
+    public List<ItemFact> getFactsForItem(Integer itemId, UUID itemSetUuid) {
+        return this.getFactsForItem.apply(itemId, itemSetUuid);
     }
 
     public List<ItemSetView> getItemSetViews() {

@@ -20,7 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 
 public class AnnotatorServiceTest {
@@ -41,6 +43,7 @@ public class AnnotatorServiceTest {
         String IS_A = "IS_A";
         String ELECTRONIC = "ELECTRONIC";
         String SPORT = "SPORT";
+        UUID itemSetUuid = UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e5");
         List<Fact> potentialFacts = new ArrayList<>() {{
             add(new Fact(IS_A, ELECTRONIC));
             add(new Fact(IS_A, SPORT));
@@ -66,7 +69,7 @@ public class AnnotatorServiceTest {
         ItemSet<Product> itemSet = new ItemSet<>();
         itemSet.setName("Sample Set");
         itemSet.setItems(products);
-        itemSet.setSetId(UUID.fromString("1f0bb0dd-69a2-4c46-a080-c5569259c1e5"));
+        itemSet.setSetId(itemSetUuid);
         itemSet.setFacts(potentialFacts);
 
         AnnotatorService<Product> annotatorService = new AnnotatorService<>(
@@ -119,18 +122,20 @@ public class AnnotatorServiceTest {
         assertNull(productAnnotatorView.getNextItemId());
 
         List<ItemFact> expectedItemFactsOne = new ArrayList<>() {{
-            add(new ItemFact(0, new Fact(IS_A, ELECTRONIC), "Mark"));
-            add(new ItemFact(0, new Fact(IS_A, SPORT), "Mark"));
+            add(new ItemFact(0, new Fact(IS_A, ELECTRONIC), "Mark", itemSetUuid));
+            add(new ItemFact(0, new Fact(IS_A, SPORT), "Mark", itemSetUuid));
         }};
 
         List<ItemFact> expectedItemFactsTwo = new ArrayList<>() {{
-            add(new ItemFact(1, new Fact(IS_A, SPORT), "Mark"));
+            add(new ItemFact(1, new Fact(IS_A, SPORT), "Mark", itemSetUuid));
         }};
 
         List<ItemFact> actualItemFactsOne = annotatorService.getAnnotations(new AnnotationsRequest(0, actualItemSetView.getUuid()));
         List<ItemFact> actualItemFactsTwo = annotatorService.getAnnotations(new AnnotationsRequest(1, actualItemSetView.getUuid()));
+        List<ItemFact> emptyListOfEmptyFacts = annotatorService.getAnnotations(new AnnotationsRequest(0, UUID.randomUUID()));
 
-        assertEquals(actualItemFactsOne, expectedItemFactsOne);
-        assertEquals(actualItemFactsTwo, expectedItemFactsTwo);
+        assertEquals(expectedItemFactsOne, actualItemFactsOne);
+        assertEquals(expectedItemFactsTwo, actualItemFactsTwo);
+        assertTrue(emptyListOfEmptyFacts.isEmpty());
     }
 }
