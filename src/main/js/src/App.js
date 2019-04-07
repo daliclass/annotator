@@ -15,6 +15,7 @@ import {
 import {TextAnnotation} from "./annotation/TextAnnotation.js";
 import Annotation from "./annotation/Annotation.js";
 import {getItemSetAction} from "./itemsets/itemSetViewer.js";
+import {addAnnotationsToItem} from "./annotation/itemAnnotation.js";
 
 class App extends Component {
   render() {
@@ -50,6 +51,7 @@ class App extends Component {
                   itemSetId={props.match.params.id}
                   annotationType={TextAnnotation}
                   onAnnotation={() => {}}
+                  onComplete={addAnnotationsToItem}
                 />
               );
             }}

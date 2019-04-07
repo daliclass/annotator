@@ -1,13 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {TextAnnotation} from "./TextAnnotation.js";
-import {shallow} from "enzyme";
 import {
   updatePredicatesAction,
-  itemAnnotatedAction,
   startingAnnotationAction,
-  getFirstItemToAnnotate,
-  addAnnotationsToItem
+  getFirstItemToAnnotate
 } from "./itemAnnotation.js";
 
 export class Annotation extends Component {
@@ -32,21 +28,31 @@ export class Annotation extends Component {
 
   render() {
     const AnnotationType = this.props.annotationType;
-    return (
-      <AnnotationType
-        subject={this.props.subject}
-        potentialFacts={this.props.predicatesAndObjects}
-        onChange={this.onPredicateChange} // TODO when state has changed
-        onComplete={this.onComplete} // TODO when a item is finished annotation
-      />
-    );
+    if (this.props.annotationCompleted) {
+      return (
+        <h2>
+          {" "}
+          Good Job! Navigate back to the main menu to annotate something else!{" "}
+        </h2>
+      );
+    } else {
+      return (
+        <AnnotationType
+          subject={this.props.subject}
+          potentialFacts={this.props.predicatesAndObjects}
+          onChange={this.onPredicateChange} // TODO when state has changed
+          onComplete={this.onComplete} // TODO when a item is finished annotation
+        />
+      );
+    }
   }
 }
 
 function mapStateToProps(state) {
   return {
     subject: state.itemAnnotation.subject,
-    predicatesAndObjects: state.itemAnnotation.predicates
+    predicatesAndObjects: state.itemAnnotation.predicates,
+    annotationCompleted: state.itemAnnotation.annotationCompleted
   };
 }
 

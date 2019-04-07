@@ -38,7 +38,7 @@ export function startingAnnotationAction(itemSetId) {
   return {type: ACTIONS.STARTING_ANNOTATION, payload: {itemSetId: itemSetId}};
 }
 
-export function getFirstItemInSet() {
+export function getFirstItemInSet(itemSetId) {
   return fetch(
     "http://localhost:8080/itemset/" + itemSetId + "/item/0/annotation/null",
     {
@@ -53,7 +53,7 @@ export function getFirstItemToAnnotate(
   firstInItemSet = getFirstItemInSet
 ) {
   return (dispatch, getState) => {
-    firstInItemSet().then(annotatorView => {
+    firstInItemSet(getState().itemAnnotation.itemSetId).then(annotatorView => {
       transformAnnotatorView(annotatorView, dispatch);
     });
   };
@@ -67,7 +67,7 @@ export function postAnnotations(annotatedItem) {
   });
 }
 
-export function getItemFotAnnotation(itemSetId, nextItemId) {
+export function getItemForAnnotation(itemSetId, nextItemId) {
   return fetch(
     "http://localhost:8080/itemset/" +
       itemSetId +
@@ -83,19 +83,24 @@ export function getItemFotAnnotation(itemSetId, nextItemId) {
 
 export function addAnnotationsToItem(
   postAnnotation = postAnnotations,
-  getItemToAnnotate = getItemFotAnnotation
+  getItemToAnnotate = getItemForAnnotation
 ) {
   return (dispatch, getState) => {
     let annotatedItem = transformStateToItemAnnotation(
       getState().itemAnnotation
     );
-    postAnnotation(annoatedItem).then(function(response) {
-      getItemToAnnotate(
-        getState().itemAnnotation.itemSetId,
-        getState().itemAnnotation.nextItemId
-      ).then(annotatorView => {
-        transformAnnotatorView(annotatorView, dispatch);
-      });
+    postAnnotation(annotatedItem).then(function(response) {
+      let state = getState();
+      if (state.itemAnnotation.nextItemId == null) {
+        dispatch(completedAnnotationAction());
+      } else {
+        getItemToAnnotate(
+          state.itemAnnotation.itemSetId,
+          state.itemAnnotation.nextItemId
+        ).then(annotatorView => {
+          transformAnnotatorView(annotatorView, dispatch);
+        });
+      }
     });
   };
 }
@@ -126,7 +131,7 @@ export function transformStateToItemAnnotation(state) {
 
 export function transformAnnotatorView(annotatorView, dispatch) {
   let annotatorViewCopy = _.cloneDeep(annotatorView);
-  const subject = annotatorView.item.text;
+  const subject = annotatorView.item.subject;
   const nextItemId = annotatorView.nextItemId;
   const itemId = annotatorView.item.itemId;
   const predicates = [];

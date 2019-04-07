@@ -6,8 +6,7 @@ import {
   newItemForAnnotationAction,
   completedAnnotationAction,
   transformAnnotatorView,
-  transformStateToItemAnnotation,
-  itemAnnotatedAction
+  transformStateToItemAnnotation
 } from "./itemAnnotation.js";
 import _ from "lodash";
 
@@ -43,7 +42,12 @@ describe("Given a item is being annotated", () => {
   });
 
   describe("When a new item for annotation", () => {
-    const predicates = {predicates: [], subject: "New Subject", nextItemId: 1, itemId: 0};
+    const predicates = {
+      predicates: [],
+      subject: "New Subject",
+      nextItemId: 1,
+      itemId: 0
+    };
     const action = newItemForAnnotationAction(predicates);
 
     it("Then update state", () => {
@@ -109,7 +113,7 @@ describe("When item view is provided from the server", () => {
   });
 });
 
-describe("When annotating a item", () => {
+describe("Given annotating a item", () => {
   it("Then convert state into a ItemAnnotation", () => {
     let spy = jest.fn();
     const uiState = {

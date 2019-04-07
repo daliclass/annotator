@@ -6,7 +6,7 @@ import AddIcon from "@material-ui/icons/Add";
 import FilterIcon from "@material-ui/icons/Filter";
 import IconButton from "@material-ui/core/IconButton";
 import {Link} from "react-router-dom";
-import {CREATE_ITEM_SET_ROUTE, VIEW_ITEM_SETS_ROUTE} from '../routes.js';
+import {CREATE_ITEM_SET_ROUTE, VIEW_ITEM_SETS_ROUTE} from "../routes.js";
 
 export class ActionBar extends Component {
   render() {
