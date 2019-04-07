@@ -24,13 +24,13 @@ const PREDICATES = [
 
 describe("When component is mounted", () => {
   it("Then call dispatch with start annotation", () => {
-    let spy = jest.fn();
+    let dispatchSpy = jest.fn();
     let annotation = shallow(
       <Annotation
         annotationType={TextAnnotation}
         subject="subject"
         predicates={PREDICATES}
-        dispatch={spy}
+        dispatch={dispatchSpy}
         itemSetId="itemSetId"
       />
     );
@@ -38,7 +38,7 @@ describe("When component is mounted", () => {
       type: "STARTNG_ANNOTATION",
       payload: {itemSetId: "itemSetId"}
     };
-    expect(spy).toHaveBeenCalledWith(expectedAction);
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   });
 });
 
@@ -48,18 +48,18 @@ describe("When predicates change", () => {
       type: "UPDATED_PREDICATES",
       payload: PREDICATES
     };
-    let spy = jest.fn();
+    let dispatchSpy = jest.fn();
     let annotation = shallow(
       <Annotation
         annotationType={TextAnnotation}
         subject="subject"
         predicates={PREDICATES}
-        dispatch={spy}
+        dispatch={dispatchSpy}
       />,
       {disableLifecycleMethods: true}
     );
     annotation.find(TextAnnotation).simulate("change", PREDICATES);
-    expect(spy).toHaveBeenCalledWith(expectedAction);
+    expect(dispatchSpy).toHaveBeenCalledWith(expectedAction);
   });
 });
 
@@ -69,21 +69,21 @@ describe("When item has been annotated", () => {
       type: "ITEM_ANNOTATED",
       payload: PREDICATES
     };
-    let spy = jest.fn();
-    let onCompleteSpy = jest.fn();
+    let dispatchSpy = jest.fn();
+    let onCompletedispatchSpy = jest.fn();
     let annotation = shallow(
       <Annotation
         annotationType={TextAnnotation}
         subject="subject"
         predicates={PREDICATES}
-        dispatch={spy}
-        onComplete={onCompleteSpy}
+        dispatch={dispatchSpy}
+        onComplete={onCompletedispatchSpy}
       />,
       {disableLifecycleMethods: true}
     );
     annotation.find(TextAnnotation).simulate("complete", PREDICATES);
-    expect(onCompleteSpy).toHaveBeenCalled();
-    expect(spy).toHaveBeenCalledWith(undefined);
+    expect(onCompletedispatchSpy).toHaveBeenCalled();
+    expect(dispatchSpy).toHaveBeenCalledWith(undefined);
   });
 });
 

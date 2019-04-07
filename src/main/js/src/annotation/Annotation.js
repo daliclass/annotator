@@ -40,8 +40,8 @@ export class Annotation extends Component {
         <AnnotationType
           subject={this.props.subject}
           potentialFacts={this.props.predicatesAndObjects}
-          onChange={this.onPredicateChange} // TODO when state has changed
-          onComplete={this.onComplete} // TODO when a item is finished annotation
+          onChange={this.onPredicateChange}
+          onComplete={this.onComplete}
         />
       );
     }
