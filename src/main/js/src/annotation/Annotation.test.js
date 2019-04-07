@@ -70,16 +70,18 @@ describe("When item has been annotated", () => {
       payload: PREDICATES
     };
     let spy = jest.fn();
+    let onCompleteSpy = jest.fn();
     let annotation = shallow(
       <Annotation
         annotationType={TextAnnotation}
         subject="subject"
         predicates={PREDICATES}
         dispatch={spy}
+        onComplete={onCompleteSpy}
       />,
       {disableLifecycleMethods: true}
     );
     annotation.find(TextAnnotation).simulate("complete", PREDICATES);
-    expect(spy).toHaveBeenCalledWith(expectedAction);
+    expect(spy).toHaveBeenCalled();
   });
 });

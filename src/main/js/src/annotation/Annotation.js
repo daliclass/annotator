@@ -6,7 +6,8 @@ import {
   updatePredicatesAction,
   itemAnnotatedAction,
   startingAnnotationAction,
-  getFirstItemToAnnotate
+  getFirstItemToAnnotate,
+  addAnnotationsToItem
 } from "./itemAnnotation.js";
 
 export class Annotation extends Component {
@@ -26,7 +27,7 @@ export class Annotation extends Component {
   }
 
   onComplete(predicates) {
-    this.props.dispatch(itemAnnotatedAction(predicates));
+    this.props.dispatch(this.props.onComplete());
   }
 
   render() {

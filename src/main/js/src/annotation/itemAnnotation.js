@@ -22,7 +22,8 @@ export const DEFAULT_STATE = {
   ],
   annotationCompleted: undefined,
   itemSetId: undefined,
-  nextItemId: undefined
+  nextItemId: undefined,
+  itemId: 0
 };
 
 const ACTIONS = {
@@ -37,26 +38,97 @@ export function startingAnnotationAction(itemSetId) {
   return {type: ACTIONS.STARTING_ANNOTATION, payload: {itemSetId: itemSetId}};
 }
 
-export function getFirstItemToAnnotate(itemSetId) {
+export function getFirstItemInSet() {
+  return fetch(
+    "http://localhost:8080/itemset/" + itemSetId + "/item/0/annotation/null",
+    {
+      method: "get",
+      headers: {"Content-Type": "application/json"}
+    }
+  ).then(resp => resp.json());
+}
+
+export function getFirstItemToAnnotate(
+  itemSetId,
+  firstInItemSet = getFirstItemInSet
+) {
   return (dispatch, getState) => {
-    fetch(
-      "http://localhost:8080/itemset/" + itemSetId + "/item/0/annotation/null",
-      {
-        method: "get",
-        headers: {"Content-Type": "application/json"}
-      }
-    )
-      .then(resp => resp.json())
-      .then(annotatorView => {
+    firstInItemSet().then(annotatorView => {
+      transformAnnotatorView(annotatorView, dispatch);
+    });
+  };
+}
+
+export function postAnnotations(annotatedItem) {
+  return fetch("http://localhost:8080/text/annotation", {
+    method: "post",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(annotatedItem)
+  });
+}
+
+export function getItemFotAnnotation(itemSetId, nextItemId) {
+  return fetch(
+    "http://localhost:8080/itemset/" +
+      itemSetId +
+      "/item/" +
+      nextItemId +
+      "/annotation/null",
+    {
+      method: "get",
+      headers: {"Content-Type": "application/json"}
+    }
+  ).then(resp => resp.json());
+}
+
+export function addAnnotationsToItem(
+  postAnnotation = postAnnotations,
+  getItemToAnnotate = getItemFotAnnotation
+) {
+  return (dispatch, getState) => {
+    let annotatedItem = transformStateToItemAnnotation(
+      getState().itemAnnotation
+    );
+    postAnnotation(annoatedItem).then(function(response) {
+      getItemToAnnotate(
+        getState().itemAnnotation.itemSetId,
+        getState().itemAnnotation.nextItemId
+      ).then(annotatorView => {
         transformAnnotatorView(annotatorView, dispatch);
       });
+    });
   };
+}
+
+export function transformStateToItemAnnotation(state) {
+  let itemFacts = state.predicates.reduce((acc, predicate) => {
+    let facts = predicate.objects
+      .filter(object => object.selected)
+      .map(object => {
+        return {
+          predicate: predicate.predicate,
+          object: object.object,
+          id: object.id
+        };
+      });
+    return acc.concat(facts);
+  }, []);
+
+  const itemAnnotation = {
+    itemId: state.itemId,
+    annotatorName: "unknown",
+    itemSetUuid: state.itemSetId,
+    itemFacts: itemFacts
+  };
+
+  return itemAnnotation;
 }
 
 export function transformAnnotatorView(annotatorView, dispatch) {
   let annotatorViewCopy = _.cloneDeep(annotatorView);
   const subject = annotatorView.item.text;
   const nextItemId = annotatorView.nextItemId;
+  const itemId = annotatorView.item.itemId;
   const predicates = [];
 
   for (var i = 0; i < annotatorViewCopy.potentialFacts.length; i++) {
@@ -69,12 +141,15 @@ export function transformAnnotatorView(annotatorView, dispatch) {
     if (foundPredicate === -1) {
       predicates.push({
         predicate: potentialFact.predicate,
-        objects: [{object: potentialFact.object, id: potentialFact.id}]
+        objects: [
+          {object: potentialFact.object, id: potentialFact.id, selected: false}
+        ]
       });
     } else {
       predicates[foundPredicate].objects.push({
         object: potentialFact.object,
-        id: potentialFact.id
+        id: potentialFact.id,
+        selected: false
       });
     }
   }
@@ -83,7 +158,8 @@ export function transformAnnotatorView(annotatorView, dispatch) {
     newItemForAnnotationAction({
       predicates: predicates,
       subject: subject,
-      nextItemId: nextItemId
+      nextItemId: nextItemId,
+      itemId: itemId
     })
   );
 }
@@ -125,6 +201,7 @@ export function itemAnnotation(state = DEFAULT_STATE, action) {
       copyOfState.predicates = action.payload.predicates;
       copyOfState.subject = action.payload.subject;
       copyOfState.nextItemId = action.payload.nextItemId;
+      copyOfState.itemId = action.payload.itemId;
       break;
     case ACTIONS.COMPLETED_ANNOTATION:
       copyOfState.predicates = [];

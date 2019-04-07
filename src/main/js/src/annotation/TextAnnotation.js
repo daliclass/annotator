@@ -1,12 +1,14 @@
 import React, {Component} from "react";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 import _ from "lodash";
 
 export class TextAnnotation extends Component {
   constructor(props) {
     super(props);
     this.checkboxChanged = this.checkboxChanged.bind(this);
+    this.submitAnnotation = this.submitAnnotation.bind(this);
   }
 
   render() {
@@ -34,8 +36,17 @@ export class TextAnnotation extends Component {
             </section>
           );
         })}
+        <Button onClick={this.submitAnnotation(this.props.potentialFacts)}>
+          submit annotation
+        </Button>
       </section>
     );
+  }
+
+  submitAnnotation(potentialFacts) {
+    return () => {
+      this.props.onComplete(potentialFacts);
+    };
   }
 
   checkboxChanged(that, changedItem) {

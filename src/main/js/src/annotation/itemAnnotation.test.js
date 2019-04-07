@@ -5,7 +5,9 @@ import {
   DEFAULT_STATE,
   newItemForAnnotationAction,
   completedAnnotationAction,
-  transformAnnotatorView
+  transformAnnotatorView,
+  transformStateToItemAnnotation,
+  itemAnnotatedAction
 } from "./itemAnnotation.js";
 import _ from "lodash";
 
@@ -41,7 +43,7 @@ describe("Given a item is being annotated", () => {
   });
 
   describe("When a new item for annotation", () => {
-    const predicates = {predicates: [], subject: "New Subject", nextItemId: 1};
+    const predicates = {predicates: [], subject: "New Subject", nextItemId: 1, itemId: 0};
     const action = newItemForAnnotationAction(predicates);
 
     it("Then update state", () => {
@@ -87,18 +89,62 @@ describe("When item view is provided from the server", () => {
       predicates: [
         {
           predicate: "suitable for",
-          objects: [{object: "men", id: 0}, {object: "women", id: 0}]
+          objects: [
+            {object: "men", id: 0, selected: false},
+            {object: "women", id: 0, selected: false}
+          ]
         },
         {
           predicate: "loved by",
-          objects: [{object: "women", id: 0}]
+          objects: [{object: "women", id: 0, selected: false}]
         }
       ],
+      itemId: 0,
       nextItemId: 1
     };
     transformAnnotatorView(annotatorView, spy);
     expect(spy).toHaveBeenCalledWith(
       newItemForAnnotationAction(expectedUiState)
     );
+  });
+});
+
+describe("When annotating a item", () => {
+  it("Then convert state into a ItemAnnotation", () => {
+    let spy = jest.fn();
+    const uiState = {
+      subject: "I'm a man",
+      predicates: [
+        {
+          predicate: "suitable for",
+          objects: [
+            {object: "men", id: 0, selected: true},
+            {object: "children", id: 0, selected: true},
+            {object: "women", id: 0, selected: false}
+          ]
+        },
+        {
+          predicate: "loved by",
+          objects: [{object: "women", id: 1, selected: true}]
+        }
+      ],
+      itemId: 0,
+      nextItemId: 1,
+      itemSetId: 123
+    };
+
+    const itemAnnotation = {
+      itemId: 0,
+      annotatorName: "unknown",
+      itemSetUuid: 123,
+      itemFacts: [
+        {predicate: "suitable for", object: "men", id: 0},
+        {predicate: "suitable for", object: "children", id: 0},
+        {predicate: "loved by", object: "women", id: 1}
+      ]
+    };
+
+    const actualItemAnnotation = transformStateToItemAnnotation(uiState);
+    expect(actualItemAnnotation).toEqual(itemAnnotation);
   });
 });
