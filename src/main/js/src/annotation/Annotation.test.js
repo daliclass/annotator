@@ -22,7 +22,7 @@ const PREDICATES = [
   }
 ];
 
-describe("When mounted", () => {
+describe("When component is mounted", () => {
   it("Then call dispatch with start annotation", () => {
     let spy = jest.fn();
     let annotation = shallow(
@@ -43,7 +43,7 @@ describe("When mounted", () => {
 });
 
 describe("When predicates change", () => {
-  it("Then update predicates", () => {
+  it("Then call dispatch with the predicates", () => {
     const expectedAction = {
       type: "UPDATED_PREDICATES",
       payload: PREDICATES
@@ -64,7 +64,7 @@ describe("When predicates change", () => {
 });
 
 describe("When item has been annotated", () => {
-  it("Then dispatch item annotated", () => {
+  it("Then call and dispatch the output from onComplete", () => {
     const expectedAction = {
       type: "ITEM_ANNOTATED",
       payload: PREDICATES
@@ -82,6 +82,23 @@ describe("When item has been annotated", () => {
       {disableLifecycleMethods: true}
     );
     annotation.find(TextAnnotation).simulate("complete", PREDICATES);
-    expect(spy).toHaveBeenCalled();
+    expect(onCompleteSpy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(undefined);
+  });
+});
+
+describe("When annotation is completed", () => {
+  it("Then render information to the user", () => {
+    let annotation = shallow(
+      <Annotation
+        annotationType={TextAnnotation}
+        subject="subject"
+        predicates={PREDICATES}
+        annotationCompleted={true}
+      />,
+      {disableLifecycleMethods: true}
+    );
+    expect(annotation.find("#completedAnnotation").length).toEqual(1);
+    expect(annotation.find(TextAnnotation).length).toEqual(0);
   });
 });

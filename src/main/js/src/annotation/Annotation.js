@@ -30,7 +30,7 @@ export class Annotation extends Component {
     const AnnotationType = this.props.annotationType;
     if (this.props.annotationCompleted) {
       return (
-        <h2>
+        <h2 id="completedAnnotation">
           {" "}
           Good Job! Navigate back to the main menu to annotate something else!{" "}
         </h2>
