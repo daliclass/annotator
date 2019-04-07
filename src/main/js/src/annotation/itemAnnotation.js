@@ -131,7 +131,7 @@ export function transformStateToItemAnnotation(state) {
 
 export function transformAnnotatorView(annotatorView, dispatch) {
   let annotatorViewCopy = _.cloneDeep(annotatorView);
-  const subject = annotatorView.item.subject;
+  const subject = annotatorView.item.text;
   const nextItemId = annotatorView.nextItemId;
   const itemId = annotatorView.item.itemId;
   const predicates = [];

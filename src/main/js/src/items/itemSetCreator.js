@@ -73,10 +73,10 @@ export function postItemSetAction() {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(prepareItemSetToBeSent(getState().itemSetCreator))
     }).then(function(response) {
-      return {
+      dispatch({
         type: ACTIONS.CREATE_ITEM_SET,
         payload: response
-      };
+      });
     });
   };
 }
@@ -110,7 +110,7 @@ export function parseTemplateAction(file) {
 }
 
 export function itemSetCreator(state = DEFAULT_STATE, action) {
-  const copyOfState = _.cloneDeep(state);
+  let copyOfState = _.cloneDeep(state);
   // eslint-disable-next-line
   switch (action.type) {
     case ACTIONS.SET_NAME:
@@ -149,6 +149,7 @@ export function itemSetCreator(state = DEFAULT_STATE, action) {
       copyOfState.items = items;
       break;
     case ACTIONS.CREATE_ITEM_SET:
+      copyOfState = DEFAULT_STATE;
       break;
   }
   return copyOfState;
