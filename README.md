@@ -13,8 +13,3 @@ annotation types.
 - [ ] Addition of a REST API to allow CRUD operations to be done over HTTP 
 - [ ] Addition of a demo of the project
 - [ ] Create documentation
-
-![](https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif)
-
-
-
