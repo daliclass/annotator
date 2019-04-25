@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.daliclass.annotator.common.AnnotatorService;
 import uk.daliclass.annotator.common.domain.ItemAnnotation;
 import uk.daliclass.annotator.common.domain.ItemSet;
+import uk.daliclass.annotator.common.domain.requests.AnnotationsRequest;
 import uk.daliclass.annotator.common.domain.requests.ItemToAnnotateRequest;
 import uk.daliclass.annotator.common.domain.views.AnnotatorView;
 import uk.daliclass.annotator.common.domain.views.ItemSetView;
@@ -37,6 +38,11 @@ public class ApplicationApi {
     @RequestMapping(value = "/annotate/text", consumes = "application/json", produces = "application/json", method = RequestMethod.POST)
     public void addProductsToAnnotate(@RequestBody ItemSet<Text> itemSet) {
         this.textAnnotatorService.addItemsToAnnotate(itemSet);
+    }
+
+    @GetMapping("/annotation")
+    public void getAnnotations(@RequestBody AnnotationsRequest annotationsRequest) {
+        this.textAnnotatorService.getAnnotations(annotationsRequest);
     }
 
     @GetMapping("/itemsets")
